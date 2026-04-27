@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dagher Capital</title>
+  <link rel="preload" as="image" href="DC__White_Transparent.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --white: #f5f4f0;
+      --gold: #b8963e;
+      --gold-light: #d4af6a;
+      --gold-dim: rgba(184,150,62,0.15);
+      --mid: #1a1a1a;
+      --border: rgba(184,150,62,0.25);
+      --text-muted: #888;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black); color: var(--white);
+      font-family: 'Montserrat', sans-serif; font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 28px 60px;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
+      backdrop-filter: blur(2px);
+      transition: padding 0.3s, background 0.3s, border-bottom 0.3s;
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--white);
+      text-decoration: none;
+      display: flex; align-items: center;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 42px; list-style: none; }
+    .nav-links a {
+      color: var(--white); text-decoration: none;
+      font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
+      font-weight: 400; opacity: 0.75;
+      transition: opacity 0.2s, color 0.2s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 1px; background: var(--gold);
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover, .nav-links a.active { opacity: 1; color: var(--gold-light); }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center; padding: 0 60px;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 80% 50%, rgba(184,150,62,0.06) 0%, transparent 70%),
+        linear-gradient(135deg, #0a0a0a 0%, #111 100%);
+    }
+    .hero-grid-lines {
+      position: absolute; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(184,150,62,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(184,150,62,0.04) 1px, transparent 1px);
+      background-size: 80px 80px;
+    }
+    .hero-left { position: relative; z-index: 1; }
+    .hero-eyebrow {
+      font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 28px; font-weight: 500;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .hero-eyebrow::before { content: ''; display: block; width: 40px; height: 1px; background: var(--gold); }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(52px, 5.5vw, 84px);
+      font-weight: 300; line-height: 1.05;
+      margin-bottom: 32px; letter-spacing: -1px;
+    }
+    .hero-title em { font-style: italic; color: var(--gold-light); }
+    .hero-subtitle {
+      font-size: 13px; line-height: 2; color: var(--text-muted);
+      max-width: 400px; margin-bottom: 50px; letter-spacing: 0.5px;
+    }
+    .hero-actions { display: flex; gap: 20px; align-items: center; }
+    .btn-primary {
+      background: var(--gold); color: var(--black);
+      border: none; padding: 16px 38px;
+      font-family: 'Montserrat', sans-serif; font-size: 10px;
+      letter-spacing: 2.5px; text-transform: uppercase; font-weight: 600;
+      cursor: pointer; transition: background 0.3s, transform 0.2s;
+      text-decoration: none; display: inline-block;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .btn-ghost {
+      color: var(--white); font-size: 11px; letter-spacing: 2px;
+      text-transform: uppercase; text-decoration: none;
+      display: flex; align-items: center; gap: 10px; opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+    .btn-ghost:hover { opacity: 1; }
+    .btn-ghost::after { content: '→'; font-size: 16px; }
+
+    /* AUM PANEL */
+    .hero-right {
+      position: relative; z-index: 1;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .aum-panel {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      padding: 44px; width: 400px;
+      position: relative;
+    }
+    .aum-panel::before {
+      content: ''; position: absolute; top: -1px; left: 40px; right: 40px;
+      height: 2px; background: var(--gold);
+    }
+    .aum-label {
+      font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 14px; font-weight: 500;
+    }
+    .aum-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 68px; font-weight: 300; line-height: 1;
+      margin-bottom: 6px; color: var(--white);
+    }
+    .aum-value span { color: var(--gold); }
+    .aum-sublabel { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 36px; }
+    .perf-row {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px; background: var(--border); margin-bottom: 28px;
+    }
+    .perf-cell {
+      background: rgba(255,255,255,0.02);
+      padding: 18px 16px;
+    }
+    .perf-cell-label { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+    .perf-cell-val {
+      font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 300; line-height: 1;
+    }
+    .perf-cell-val.pos { color: #5ab88a; }
+    .perf-cell-val.gold { color: var(--gold-light); }
+    .perf-cell-sub { font-size: 9px; color: var(--text-muted); margin-top: 4px; }
+    .aum-footer {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 20px; border-top: 1px solid var(--border);
+    }
+    .aum-footer-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+    .live-dot {
+      display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+      background: #5ab88a; margin-right: 8px;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
+
+    /* STATS BAR */
+    .stats-bar {
+      background: var(--mid);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      display: grid; grid-template-columns: repeat(4, 1fr);
+    }
+    .stat-item {
+      padding: 40px 20px; text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 48px; font-weight: 300; line-height: 1; margin-bottom: 8px;
+    }
+    .stat-number span { color: var(--gold); }
+    .stat-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); }
+
+    /* SECTIONS */
+    section { padding: 120px 60px; }
+    .section-eyebrow {
+      font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 18px; font-weight: 500;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .section-eyebrow::before { content: ''; display: block; width: 30px; height: 1px; background: var(--gold); }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(40px, 4vw, 62px);
+      font-weight: 300; line-height: 1.15; margin-bottom: 20px;
+    }
+    .section-title em { font-style: italic; color: var(--gold-light); }
+    .gold-divider { width: 60px; height: 1px; background: var(--gold); margin: 24px 0; }
+
+    /* ABOUT */
+    #about {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center;
+    }
+    .about-text p {
+      font-size: 13px; line-height: 2.2; color: var(--text-muted);
+      margin-bottom: 20px; letter-spacing: 0.3px;
+    }
+    .about-text p:first-of-type {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px; font-weight: 300; color: rgba(245,244,240,0.85);
+      line-height: 1.8; letter-spacing: 0;
+    }
+    .about-pillars { display: flex; flex-direction: column; gap: 2px; }
+    .pillar {
+      padding: 28px 32px; border: 1px solid rgba(255,255,255,0.05);
+      transition: border-color 0.3s, background 0.3s;
+      display: flex; align-items: flex-start; gap: 22px;
+    }
+    .pillar:hover { border-color: var(--border); background: rgba(184,150,62,0.03); }
+    .pillar-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px; font-weight: 300; color: var(--gold); opacity: 0.4;
+      line-height: 1; flex-shrink: 0; width: 32px;
+    }
+    .pillar-title { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; font-weight: 500; }
+    .pillar-desc { font-size: 12px; color: var(--text-muted); line-height: 1.8; }
+
+    /* TEAM */
+    #team { position: relative; }
+    #team::before {
+      content: 'TEAM'; position: absolute; top: 60px; right: 60px;
+      font-family: 'Cormorant Garamond', serif; font-size: 180px; font-weight: 300;
+      color: rgba(255,255,255,0.02); letter-spacing: 20px; pointer-events: none; line-height: 1;
+    }
+    
+    .team-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 2px; margin-top: 60px; background: var(--border);
+    }
+    .team-card { background: var(--black); padding: 40px 32px; transition: background 0.3s; }
+    .team-card:hover { background: #0f0f0f; }
+    .team-initial {
+      width: 56px; height: 56px; border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300;
+      color: var(--gold); margin-bottom: 24px;
+    }
+    .team-name { font-size: 14px; font-weight: 500; letter-spacing: 1px; margin-bottom: 4px; }
+    .team-role { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    .team-desc { font-size: 11px; color: var(--text-muted); line-height: 1.9; }
+
+    /* CONTACT */
+    #contact { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; }
+    .contact-detail { margin-top: 44px; display: flex; flex-direction: column; gap: 24px; }
+    .cd-item { display: flex; align-items: flex-start; gap: 18px; }
+    .cd-icon {
+      width: 38px; height: 38px; border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; flex-shrink: 0; color: var(--gold);
+    }
+    .cd-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+    .cd-value { font-size: 13px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%; background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 14px 18px; color: var(--white);
+      font-family: 'Montserrat', sans-serif; font-size: 12px;
+      outline: none; transition: border-color 0.3s; resize: none;
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--gold); }
+    .form-group select option { background: var(--black); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    /* FOOTER */
+    footer {
+      background: var(--black); border-top: 1px solid var(--border);
+      padding: 60px 60px 40px;
+    }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 50px; }
+    .footer-brand .brand-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 16px;
+    }
+    .footer-brand .brand-name span { color: var(--gold); }
+    .footer-brand p { font-size: 11px; color: var(--text-muted); line-height: 2; max-width: 280px; }
+    .footer-col h4 { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .footer-col ul a { color: var(--text-muted); text-decoration: none; font-size: 12px; transition: color 0.2s; letter-spacing: 0.5px; }
+    .footer-col ul a:hover { color: var(--white); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.06); padding-top: 30px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-bottom p { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; }
+    .footer-bottom .disclaimer { font-size: 9px; color: rgba(136,136,136,0.5); max-width: 400px; line-height: 1.8; text-align: right; }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { opacity: 0; animation: fadeUp 0.8s ease forwards; }
+    .d1{animation-delay:0.1s} .d2{animation-delay:0.25s} .d3{animation-delay:0.4s} .d4{animation-delay:0.55s} .d5{animation-delay:0.7s}
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <nav id="main-nav">
+    <a class="nav-logo" href="index.html"><img src="Dagher__White_Transparent.png" alt="Dagher" style="height:20px; width:auto; display:inline-block; position:relative; bottom:3px; margin-right:10px;" /> <span>CAPITAL</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="investments.html">Investments</a></li>
+      <li><a href="macro.html">Macro</a></li>
+      <li><a href="consulting.html">Consulting</a></li>
+      <li><a href="quant.html">Quant</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO / AUM -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid-lines"></div>
+    <div class="hero-left">
+      <div class="hero-eyebrow fade-in d1">Investment Management</div>
+      <h1 class="hero-title fade-in d2">
+        Where Capital<br/>Meets <em>Conviction</em>
+      </h1>
+      <p class="hero-subtitle fade-in d3">
+        Dagher Capital is a research-driven investment firm built on rigorous fundamental analysis, independent thinking, and a relentless commitment to long-term performance.
+      </p>
+      <div class="hero-actions fade-in d4">
+        <a href="investments.html" class="btn-primary">View Investments</a>
+        <a href="#about" class="btn-ghost">Our Philosophy</a>
+      </div>
+    </div>
+    <div class="hero-right fade-in d5">
+      <div class="aum-panel">
+        <div class="aum-label"><span class="live-dot"></span>Assets Under Management</div>
+        <div class="aum-value">$<span id="aum-counter">0</span></div>
+        <div class="aum-sublabel">Total AUM</div>
+        <div class="perf-row">
+          <div class="perf-cell">
+            <div class="perf-cell-label">YoY Return</div>
+            <div class="perf-cell-val pos">+8.98%</div>
+            <div class="perf-cell-sub">vs S&P +3.81%</div>
+          </div>
+          <div class="perf-cell">
+            <div class="perf-cell-label">All-Time Return</div>
+            <div class="perf-cell-val pos">+8.98%</div>
+            <div class="perf-cell-sub">Since inception (Feb, 26')</div>
+          </div>
+          <div class="perf-cell">
+            <div class="perf-cell-label">Alpha</div>
+            <div class="perf-cell-val gold">+--%</div>
+            <div class="perf-cell-sub">Annualized</div>
+          </div>
+        </div>
+        <div class="aum-footer">
+          <div class="aum-footer-label">Ratings Published</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--gold-light)">0</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar reveal">
+    <div class="stat-item">
+      <div class="stat-number">0<span>+</span></div>
+      <div class="stat-label">Analyst Ratings</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">0<span>+</span></div>
+      <div class="stat-label">Sectors Covered</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">100<span>%</span></div>
+      <div class="stat-label">Research-Driven</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number"><span>$</span>0</div>
+      <div class="stat-label">Hidden Fees</div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-text reveal">
+      <div class="section-eyebrow">Who We Are</div>
+      <h2 class="section-title">Rigorous Research with<br/><em>Independent</em> Thinking.</h2>
+      <div class="gold-divider"></div>
+      <p>Dagher Capital is a student-run initiative which aims to perform disciplined fundamental research, evaluating companies internal and external capabilities, coupling the world's marco environment.</p>
+      <p>With specialisations in Economics, Tech, Finance, and Consulting; we operate as a diverse team of analysts who combine our expertise in quantitative analysis with qualitative insights.</p>
+      <p>We track our performance openly, hold ourselves accountable, and invest alongside our clients.</p>
+    </div>
+    <div class="about-pillars reveal">
+      <div class="pillar">
+        <div class="pillar-num">01</div>
+        <div>
+          <div class="pillar-title">Research</div>
+          <div class="pillar-desc">Every investment thesis is built on original analysis. We read the filings, stress-test the models, and form our own view before markets do.</div>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">02</div>
+        <div>
+          <div class="pillar-title">Transparency</div>
+          <div class="pillar-desc">We publish our ratings, track our record, and own our misses.</div>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">03</div>
+        <div>
+          <div class="pillar-title">Long-Term Outlook</div>
+          <div class="pillar-desc">Our portfolio is diversified with a multi-year horizon, while optimizing for profitable trades within a year.</div>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">04</div>
+        <div>
+          <div class="pillar-title">Continuous Learning</div>
+          <div class="pillar-desc">Our team emphasise the importance of constistent learning. Every trade feeds back into how we research moving forward.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section id="team">
+    <div class="reveal">
+      <div class="section-eyebrow">Our Analysts</div>
+      <h2 class="section-title">The <em>Minds</em> Behind<br/>the Research</h2>
+    </div>
+    <div class="team-grid reveal">
+      <div class="team-card">
+        <div class="team-initial">D</div>
+        <div class="team-name">Elie Dagher</div>
+        <div class="team-role">Founder</div>
+        <div class="team-desc">Explains waht you do</div>
+      </div>
+      <div class="team-card">
+        <div class="team-initial">S</div>
+        <div class="team-name">Saiprasad Venkataraman</div>
+        <div class="team-role">Role</div>
+        <div class="team-desc">explain what he does</div>
+      </div>
+      <div class="team-card">
+        <div class="team-initial">M</div>
+        <div class="team-name">Mohamad Shaikh-Deeb</div>
+        <div class="team-role">Role</div>
+        <div class="team-desc">explain</div>
+      </div>
+      <div class="team-card">
+        <div class="team-initial">Y</div>
+        <div class="team-name">Yunos Azim</div>
+        <div class="team-role">Role</div>
+        <div class="team-desc">Explain</div>
+      </div>
+      <div class="team-card">
+        <div class="team-initial">V</div>
+        <div class="team-name">Yasili Andrepoulos</div>
+        <div class="team-role">Role</div>
+        <div class="team-desc">Explain</div>
+      </div>
+      <div class="team-card">
+        <div class="team-initial">C</div>
+        <div class="team-name">Charles Zheng</div>
+        <div class="team-role">Role</div>
+        <div class="team-desc">Explain</div>
+      </div>
+      
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="reveal">
+      <div class="section-eyebrow">Get In Touch</div>
+      <h2 class="section-title">Let's Build <em>Wealth</em><br/>Together</h2>
+      <div class="gold-divider"></div>
+      <p style="font-size:13px;color:var(--text-muted);line-height:2;margin-bottom:8px">
+        Whether you're saving for retirement or interested in our managed strategies we'd like to hear from you.
+      </p>
+      <div class="contact-detail">
+        <div class="cd-item">
+          <div class="cd-icon">✉</div>
+          <div><div class="cd-label">Email</div><div class="cd-value">contact@daghercapital.ca</div></div>
+        </div>
+        <div class="cd-item">
+          <div class="cd-icon">◎</div>
+          <div><div class="cd-label">Headquarters</div><div class="cd-value">London, Ontario, Canada</div></div>
+        </div>
+        <div class="cd-item">
+          <div class="cd-icon">⟳</div>
+          <div><div class="cd-label">Response Time</div><div class="cd-value">Within 24 business hours</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="form-row">
+        <div class="form-group"><label>First Name</label><input type="text" placeholder="John" /></div>
+        <div class="form-group"><label>Last Name</label><input type="text" placeholder="Smith" /></div>
+      </div>
+      <div class="form-group"><label>Email Address</label><input type="email" placeholder="you@gmail.com" /></div>
+      <div class="form-group">
+        <label>Inquiry Type</label>
+        <select>
+          <option>Investment Inquiry</option>
+          <option>Consulting Inquiry</option>
+          <option>Quant Collaboration</option>
+          <option>Media & Press</option>
+          <option>General</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Message</label><textarea rows="5" placeholder="Tell us about your goals..."></textarea></div>
+      <button class="btn-primary" style="width:100%;padding:18px;font-size:11px">Send Message →</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="brand-name">DAGHER <span>CAPITAL</span></div>
+        <p>A research-driven investment firm dedicated to generating significant long-term returns through rigorous fundamental analysis.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Firm</h4>
+        <ul>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#team">Our Team</a></li>
+          <li><a href="investments.html#performance">Track Record</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Divisions</h4>
+        <ul>
+          <li><a href="investments.html">Investments</a></li>
+          <li><a href="consulting.html">Consulting</a></li>
+          <li><a href="quant.html">Quant</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#contact">Contact Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Disclaimer</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Dagher Capital. All rights reserved.</p>
+      <p class="disclaimer">This website is for informational purposes only and does not constitute investment advice. Past performance is not indicative of future results.</p>
+    </div>
+  </footer>
+
+  <script>
+    
+    // AUM counter on load
+    function animateAUM(target, duration) {
+      const el = document.getElementById('aum-counter');
+      let start = null;
+      function step(ts) {
+        if (!start) start = ts;
+        const progress = Math.min((ts - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const val = Math.floor(eased * target);
+        el.textContent = val.toLocaleString();
+        if (progress < 1) requestAnimationFrame(step);
+        else el.textContent = target.toLocaleString();
+      }
+      requestAnimationFrame(step);
+    }
+    window.addEventListener('load', () => setTimeout(() => animateAUM(108000, 2200), 400));
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80); });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Nav scroll
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 80) {
+        nav.style.background = 'rgba(10,10,10,0.97)';
+        nav.style.borderBottom = '1px solid rgba(184,150,62,0.2)';
+        nav.style.padding = '18px 60px';
+      } else {
+        nav.style.background = 'linear-gradient(to bottom, rgba(10,10,10,0.95), transparent)';
+        nav.style.borderBottom = 'none';
+        nav.style.padding = '28px 60px';
+      }
+    });
+  </script>
+</body>
+</html>

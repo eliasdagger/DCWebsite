@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PrintHub — 3D Printing for Western Eng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111;
+    --border: #222;
+    --accent: #ff4d00;
+    --accent2: #ff8c42;
+    --text: #f0ede8;
+    --muted: #666;
+    --card: #131313;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 3rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(12px);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 0.05em;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  .nav-cta {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.4rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .nav-cta:hover { background: var(--accent2); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,77,0,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,77,0,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255,77,0,0.12) 0%, transparent 70%);
+    top: 10%;
+    right: 10%;
+    pointer-events: none;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6rem 3rem 6rem 6rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(255,77,0,0.3);
+    padding: 0.4rem 0.8rem;
+    width: fit-content;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero-tag::before {
+    content: '●';
+    animation: blink 1.5s infinite;
+  }
+
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 8vw, 7.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--accent);
+    display: block;
+  }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 420px;
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .hero-sub strong { color: var(--text); }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.9rem 2rem;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+  }
+
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-2px); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.9rem 2rem;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover { border-color: var(--muted); transform: translateY(-2px); }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.3rem;
+  }
+
+  /* HERO RIGHT - 3D Printer Illustration */
+  .hero-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    padding: 3rem;
+  }
+
+  .printer-viz {
+    position: relative;
+    width: 380px;
+    height: 420px;
+    animation: float 4s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-18px); }
+  }
+
+  .printer-viz svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 30px 60px rgba(255,77,0,0.25));
+  }
+
+  .print-layer {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 160px;
+    height: 4px;
+    background: var(--accent);
+    box-shadow: 0 0 20px var(--accent);
+    animation: printLine 2s ease-in-out infinite;
+  }
+
+  @keyframes printLine {
+    0%,100% { width: 160px; opacity: 1; }
+    50% { width: 80px; opacity: 0.6; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* MARQUEE */
+  .marquee-bar {
+    background: var(--accent);
+    padding: 0.75rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .marquee-track {
+    display: inline-flex;
+    animation: marquee 18s linear infinite;
+  }
+
+  .marquee-track span {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    color: #fff;
+    margin: 0 2rem;
+  }
+
+  .marquee-track span.dot { color: rgba(255,255,255,0.5); }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 6rem 6rem;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .section-sub {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 480px;
+  }
+
+  /* HOW IT WORKS */
+  .how {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .how-inner {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 6rem;
+    align-items: start;
+  }
+
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 3rem;
+  }
+
+  .step {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1.8rem 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    cursor: default;
+    transition: all 0.2s;
+  }
+
+  .step:last-child { border-bottom: none; }
+
+  .step:hover .step-num { color: var(--accent); }
+
+  .step-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    color: var(--border);
+    line-height: 1;
+    transition: color 0.2s;
+    min-width: 60px;
+  }
+
+  .step-content h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+
+  .step-content p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  /* MATERIALS */
+  .materials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 3rem;
+  }
+
+  .material-card {
+    background: var(--card);
+    padding: 2rem;
+    transition: background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .material-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+    transform-origin: left;
+  }
+
+  .material-card:hover::before { transform: scaleX(1); }
+  .material-card:hover { background: #181818; }
+
+  .material-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .material-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+
+  .material-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .material-desc {
+    color: var(--muted);
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  /* PRICING */
+  .pricing {
+    background: var(--bg);
+  }
+
+  .pricing-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    margin-bottom: 3rem;
+    align-items: end;
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .price-card {
+    background: var(--card);
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    transition: background 0.2s;
+  }
+
+  .price-card.featured {
+    background: var(--accent);
+  }
+
+  .price-card:not(.featured):hover { background: #181818; }
+
+  .price-tier {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    color: var(--muted);
+  }
+
+  .price-card.featured .price-tier { color: rgba(255,255,255,0.7); }
+
+  .price-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+
+  .price-unit {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 2rem;
+  }
+
+  .price-card.featured .price-unit { color: rgba(255,255,255,0.7); }
+
+  .price-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    flex: 1;
+    margin-bottom: 2rem;
+  }
+
+  .price-features li {
+    font-size: 0.88rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .price-features li::before {
+    content: '→';
+    color: var(--accent);
+    font-size: 0.75rem;
+  }
+
+  .price-card.featured .price-features li { color: rgba(255,255,255,0.85); }
+  .price-card.featured .price-features li::before { color: rgba(255,255,255,0.6); }
+
+  .price-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.8rem 1.5rem;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    text-align: center;
+  }
+
+  .price-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .price-card.featured .price-btn {
+    background: rgba(255,255,255,0.15);
+    border-color: transparent;
+    color: #fff;
+  }
+
+  .price-card.featured .price-btn:hover { background: rgba(255,255,255,0.25); }
+
+  /* WHY US */
+  .why {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+  }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3rem;
+    margin-top: 3rem;
+  }
+
+  .why-item h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .why-item p {
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+
+  .why-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(255,77,0,0.1);
+    border: 1px solid rgba(255,77,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+  }
+
+  /* UPLOAD CTA */
+  .upload-section {
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    text-align: center;
+    padding: 8rem 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .upload-section::before {
+    content: 'PRINT';
+    position: absolute;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22vw;
+    color: rgba(255,77,0,0.03);
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .upload-box {
+    max-width: 600px;
+    margin: 3rem auto 0;
+    border: 2px dashed var(--border);
+    padding: 4rem 2rem;
+    transition: border-color 0.2s;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+  }
+
+  .upload-box:hover { border-color: var(--accent); }
+
+  .upload-icon { font-size: 3rem; margin-bottom: 1rem; }
+
+  .upload-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .upload-sub { color: var(--muted); font-size: 0.8rem; }
+
+  .upload-formats {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .format-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    border: 1px solid var(--border);
+    padding: 0.3rem 0.6rem;
+    color: var(--muted);
+  }
+
+  /* TESTIMONIALS */
+  .testimonials {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+  }
+
+  .testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 3rem;
+  }
+
+  .testimonial-card {
+    background: var(--card);
+    padding: 2rem;
+  }
+
+  .testimonial-text {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .avatar {
+    width: 36px;
+    height: 36px;
+    background: rgba(255,77,0,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    color: var(--accent);
+  }
+
+  .author-name {
+    font-weight: 600;
+    font-size: 0.88rem;
+  }
+
+  .author-prog {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .stars {
+    color: var(--accent);
+    font-size: 0.75rem;
+    margin-bottom: 1rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* FAQ */
+  .faq {
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+  }
+
+  .faq-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+  }
+
+  .faq-list {
+    margin-top: 3rem;
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .faq-q {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.3rem 0;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.95rem;
+    user-select: none;
+    gap: 1rem;
+  }
+
+  .faq-q:hover { color: var(--accent); }
+
+  .faq-arrow {
+    color: var(--muted);
+    transition: transform 0.3s;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .faq-item.open .faq-arrow { transform: rotate(45deg); color: var(--accent); }
+
+  .faq-a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s;
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .faq-item.open .faq-a {
+    max-height: 200px;
+    padding-bottom: 1.3rem;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 4rem 6rem 3rem;
+  }
+
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .footer-brand p {
+    color: var(--muted);
+    font-size: 0.85rem;
+    line-height: 1.7;
+    margin-top: 1rem;
+    max-width: 280px;
+  }
+
+  .footer-col h4 {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+
+  .footer-col a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.88rem;
+    transition: color 0.2s;
+  }
+
+  .footer-col a:hover { color: var(--text); }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .western-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    border: 1px solid rgba(255,77,0,0.3);
+    padding: 0.3rem 0.7rem;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hero-left { padding: 4rem 2rem; }
+    section { padding: 4rem 2rem; }
+    .how-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .materials-grid { grid-template-columns: 1fr; }
+    .pricing-header { grid-template-columns: 1fr; gap: 2rem; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .why-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .testimonial-grid { grid-template-columns: 1fr; }
+    .faq-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+    footer { padding: 3rem 2rem 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">PRINT<span>HUB</span></a>
+  <ul class="nav-links">
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#materials">Materials</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a href="#upload" class="nav-cta">Start a Print →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-left">
+    <div class="hero-tag">London, Ontario · Western University</div>
+    <h1>Your Print.<br><em>Our Machines.</em></h1>
+    <p class="hero-sub">
+      Lab printers full again? We've got you. <strong>PrintHub</strong> is London's fastest 3D printing service — built specifically for <strong>Western Engineering students</strong>.
+    </p>
+    <div class="hero-actions">
+      <a href="#upload" class="btn-primary">Upload Your File →</a>
+      <a href="#pricing" class="btn-secondary">See Pricing</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">24h</div>
+        <div class="stat-label">Turnaround</div>
+      </div>
+      <div>
+        <div class="stat-num">$0.08</div>
+        <div class="stat-label">Per gram PLA</div>
+      </div>
+      <div>
+        <div class="stat-num">4+</div>
+        <div class="stat-label">Materials</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="printer-viz">
+      <svg viewBox="0 0 380 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Printer frame -->
+        <rect x="60" y="40" width="260" height="300" rx="4" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="2"/>
+        <!-- Top bar -->
+        <rect x="40" y="30" width="300" height="30" rx="3" fill="#1e1e1e" stroke="#2a2a2a" stroke-width="1.5"/>
+        <!-- Screen -->
+        <rect x="80" y="75" width="80" height="50" rx="2" fill="#0d0d0d" stroke="#ff4d00" stroke-width="1"/>
+        <rect x="88" y="83" width="64" height="8" rx="1" fill="#ff4d00" opacity="0.4"/>
+        <rect x="88" y="97" width="40" height="4" rx="1" fill="#333"/>
+        <rect x="88" y="107" width="55" height="4" rx="1" fill="#333"/>
+        <!-- Print head rail -->
+        <rect x="80" y="145" width="220" height="8" rx="2" fill="#222" stroke="#333" stroke-width="1"/>
+        <!-- Print head -->
+        <rect x="155" y="138" width="40" height="24" rx="2" fill="#ff4d00" opacity="0.9"/>
+        <rect x="171" y="162" width="8" height="16" fill="#ff6620"/>
+        <!-- Build plate -->
+        <rect x="80" y="260" width="220" height="12" rx="2" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+        <!-- Grid on build plate -->
+        <line x1="100" y1="260" x2="100" y2="272" stroke="#2a2a2a" stroke-width="1"/>
+        <line x1="140" y1="260" x2="140" y2="272" stroke="#2a2a2a" stroke-width="1"/>
+        <line x1="180" y1="260" x2="180" y2="272" stroke="#2a2a2a" stroke-width="1"/>
+        <line x1="220" y1="260" x2="220" y2="272" stroke="#2a2a2a" stroke-width="1"/>
+        <line x1="260" y1="260" x2="260" y2="272" stroke="#2a2a2a" stroke-width="1"/>
+        <!-- Printed object layers -->
+        <rect x="145" y="236" width="60" height="24" rx="1" fill="#ff4d00" opacity="0.15"/>
+        <rect x="148" y="228" width="54" height="10" rx="1" fill="#ff4d00" opacity="0.3"/>
+        <rect x="151" y="220" width="48" height="10" rx="1" fill="#ff4d00" opacity="0.5"/>
+        <rect x="154" y="213" width="42" height="9" rx="1" fill="#ff4d00" opacity="0.7"/>
+        <rect x="158" y="207" width="34" height="8" rx="1" fill="#ff4d00" opacity="0.85"/>
+        <!-- Filament spool -->
+        <circle cx="300" cy="100" r="35" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="2"/>
+        <circle cx="300" cy="100" r="20" fill="#111" stroke="#333" stroke-width="1"/>
+        <circle cx="300" cy="100" r="8" fill="#ff4d00" opacity="0.6"/>
+        <!-- Filament line -->
+        <path d="M300 65 Q280 140 175 155" stroke="#ff4d00" stroke-width="1.5" stroke-dasharray="4 2" fill="none" opacity="0.5"/>
+        <!-- Vertical rails -->
+        <rect x="62" y="42" width="8" height="296" rx="2" fill="#161616" stroke="#2a2a2a" stroke-width="1"/>
+        <rect x="310" y="42" width="8" height="296" rx="2" fill="#161616" stroke="#2a2a2a" stroke-width="1"/>
+        <!-- Base -->
+        <rect x="50" y="335" width="280" height="20" rx="3" fill="#1e1e1e" stroke="#2a2a2a" stroke-width="1.5"/>
+        <!-- Feet -->
+        <rect x="65" y="353" width="30" height="10" rx="2" fill="#1a1a1a"/>
+        <rect x="285" y="353" width="30" height="10" rx="2" fill="#1a1a1a"/>
+        <!-- Status LEDs -->
+        <circle cx="250" cy="90" r="5" fill="#ff4d00" opacity="0.9">
+          <animate attributeName="opacity" values="0.9;0.3;0.9" dur="1.5s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="270" cy="90" r="5" fill="#22c55e" opacity="0.9"/>
+        <!-- Print progress glow -->
+        <rect x="145" y="205" width="60" height="60" rx="1" fill="url(#printGlow)" opacity="0.3"/>
+        <defs>
+          <radialGradient id="printGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ff4d00" stop-opacity="1"/>
+            <stop offset="100%" stop-color="#ff4d00" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+      </svg>
+      <div class="print-layer"></div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-bar">
+  <div class="marquee-track">
+    <span>PLA Printing</span><span class="dot">◆</span>
+    <span>PETG Available</span><span class="dot">◆</span>
+    <span>24h Turnaround</span><span class="dot">◆</span>
+    <span>Free Campus Pickup</span><span class="dot">◆</span>
+    <span>Student Pricing</span><span class="dot">◆</span>
+    <span>STL · OBJ · 3MF</span><span class="dot">◆</span>
+    <span>London, Ontario</span><span class="dot">◆</span>
+    <span>Western Eng Approved</span><span class="dot">◆</span>
+    <span>PLA Printing</span><span class="dot">◆</span>
+    <span>PETG Available</span><span class="dot">◆</span>
+    <span>24h Turnaround</span><span class="dot">◆</span>
+    <span>Free Campus Pickup</span><span class="dot">◆</span>
+    <span>Student Pricing</span><span class="dot">◆</span>
+    <span>STL · OBJ · 3MF</span><span class="dot">◆</span>
+    <span>London, Ontario</span><span class="dot">◆</span>
+    <span>Western Eng Approved</span><span class="dot">◆</span>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="how-inner">
+    <div>
+      <div class="section-label">// Process</div>
+      <div class="section-title">Three Steps to Your Part</div>
+      <p class="section-sub">No lab queue. No waiting. Just upload, pay, and pick it up.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <h3>Upload Your File</h3>
+          <p>Drop your STL, OBJ, or 3MF file. Choose your material, infill, and quality settings. Get an instant quote in seconds.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <h3>We Slice & Print</h3>
+          <p>Our team slices your model with optimized settings and starts printing. You'll get email updates at each stage.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <h3>Pick Up or Delivery</h3>
+          <p>Grab your print at our London location or choose campus delivery. Most orders ready within 24 hours.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <h3>Build Something Great</h3>
+          <p>Ship your project. Ace your lab. Graduate. We'll be here for the next one too.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MATERIALS -->
+<section id="materials" style="background:var(--bg); border-top:1px solid var(--border);">
+  <div class="section-label">// Materials</div>
+  <div class="section-title">What We Print With</div>
+  <p class="section-sub" style="margin-bottom:0">Every material stocked and ready. No waiting for filament orders.</p>
+  <div class="materials-grid">
+    <div class="material-card">
+      <div class="material-icon">🟠</div>
+      <div class="material-name">Most Popular</div>
+      <div class="material-title">PLA</div>
+      <div class="material-desc">Perfect for prototypes, models, and concept parts. Easy to print, great detail, biodegradable. The go-to for most engineering projects.</div>
+    </div>
+    <div class="material-card">
+      <div class="material-icon">🔵</div>
+      <div class="material-name">Functional</div>
+      <div class="material-title">PETG</div>
+      <div class="material-desc">Tougher than PLA with better heat resistance. Great for enclosures, jigs, and parts that need a bit more durability.</div>
+    </div>
+    <div class="material-card">
+      <div class="material-icon">⚫</div>
+      <div class="material-name">Engineering Grade</div>
+      <div class="material-title">ABS</div>
+      <div class="material-desc">High heat resistance and impact strength. Ideal for automotive, mechanical, and high-temp applications. Post-processing friendly.</div>
+    </div>
+    <div class="material-card">
+      <div class="material-icon">🟡</div>
+      <div class="material-name">Flexible</div>
+      <div class="material-title">TPU</div>
+      <div class="material-desc">Rubber-like flexibility with excellent impact absorption. Great for gaskets, grips, wearables, and vibration-dampening components.</div>
+    </div>
+    <div class="material-card">
+      <div class="material-icon">⚪</div>
+      <div class="material-name">High-Strength</div>
+      <div class="material-title">ASA</div>
+      <div class="material-desc">UV and weather resistant. Excellent for outdoor functional parts. Better surface finish than ABS with similar properties.</div>
+    </div>
+    <div class="material-card" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;cursor:default;">
+      <div style="font-size:2rem;margin-bottom:1rem;">✉️</div>
+      <div class="material-name">Custom</div>
+      <div class="material-title">Need Something Else?</div>
+      <div class="material-desc">Special filament requirements? Send us a message and we'll source it.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="pricing-header">
+    <div>
+      <div class="section-label">// Pricing</div>
+      <div class="section-title">Honest Rates.<br>No Surprises.</div>
+    </div>
+    <p class="section-sub">
+      All prices are per-gram of material used. You only pay for what your model actually uses. Get an instant quote when you upload your file.
+    </p>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-tier">Standard</div>
+      <div class="price-amount">$0.08</div>
+      <div class="price-unit">per gram · PLA/PETG</div>
+      <ul class="price-features">
+        <li>48h turnaround</li>
+        <li>0.2mm layer height</li>
+        <li>15–20% infill</li>
+        <li>Standard support removal</li>
+        <li>Campus pickup included</li>
+      </ul>
+      <a href="#upload" class="price-btn">Get a Quote</a>
+    </div>
+    <div class="price-card featured">
+      <div class="price-tier">Rush — Most Popular</div>
+      <div class="price-amount">$0.12</div>
+      <div class="price-unit">per gram · all materials</div>
+      <ul class="price-features">
+        <li>24h turnaround guaranteed</li>
+        <li>0.15mm layer height</li>
+        <li>20% infill (customizable)</li>
+        <li>Clean support removal</li>
+        <li>Priority queue + text updates</li>
+      </ul>
+      <a href="#upload" class="price-btn">Get a Quote</a>
+    </div>
+    <div class="price-card">
+      <div class="price-tier">High-Quality</div>
+      <div class="price-amount">$0.16</div>
+      <div class="price-unit">per gram · all materials</div>
+      <ul class="price-features">
+        <li>48–72h turnaround</li>
+        <li>0.1mm layer height</li>
+        <li>Custom infill %</li>
+        <li>Post-processing options</li>
+        <li>Photo delivery confirmation</li>
+      </ul>
+      <a href="#upload" class="price-btn">Get a Quote</a>
+    </div>
+  </div>
+  <p style="text-align:center;margin-top:1.5rem;font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.08em;color:var(--muted);text-transform:uppercase;">
+    Delivery in London +$5 flat · Campus pickup always free · Minimum order $4
+  </p>
+</section>
+
+<!-- WHY US -->
+<section class="why" id="why">
+  <div class="section-label">// Why PrintHub</div>
+  <div class="section-title">Built for Western Eng</div>
+  <div class="why-grid">
+    <div class="why-item">
+      <div class="why-icon">⚡</div>
+      <h3>Fast When It Matters</h3>
+      <p>Deadline at 8am? We print overnight. Rush orders are our specialty, not our exception.</p>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">🎓</div>
+      <h3>Student-Friendly Pricing</h3>
+      <p>We're students too. Our rates are designed to be cheaper than the lab's time is worth.</p>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">📍</div>
+      <h3>London-Local</h3>
+      <p>Based in London, ON. Pick up near campus or get same-city delivery. No shipping delays.</p>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">🔧</div>
+      <h3>Eng-Grade Quality</h3>
+      <p>We understand tolerances, layer adhesion, and design for manufacturability. Your parts work.</p>
+    </div>
+  </div>
+</section>
+
+<!-- UPLOAD CTA -->
+<section class="upload-section" id="upload">
+  <div class="section-label" style="text-align:center">// Upload</div>
+  <div class="section-title" style="text-align:center;font-size:clamp(2.5rem,5vw,4.5rem)">Ready to Print?</div>
+  <p class="section-sub" style="margin:1rem auto 0;text-align:center;max-width:440px">Drop your file below for an instant quote. Supports STL, OBJ, 3MF, and STEP files.</p>
+  <div class="upload-box" onclick="document.getElementById('fileInput').click()">
+    <div class="upload-icon">📁</div>
+    <div class="upload-text">Drag & Drop your file here</div>
+    <div class="upload-sub">or click to browse</div>
+    <div class="upload-formats">
+      <span class="format-tag">.STL</span>
+      <span class="format-tag">.OBJ</span>
+      <span class="format-tag">.3MF</span>
+      <span class="format-tag">.STEP</span>
+    </div>
+    <input type="file" id="fileInput" style="display:none" accept=".stl,.obj,.3mf,.step" onchange="handleFile(event)">
+  </div>
+  <p style="text-align:center;margin-top:1.5rem;font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.08em;color:var(--muted);text-transform:uppercase;">
+    Or email us directly: <a href="mailto:prints@printhublondon.ca" style="color:var(--accent);text-decoration:none">prints@printhublondon.ca</a>
+  </p>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="section-label">// Reviews</div>
+  <div class="section-title">What Students Say</div>
+  <div class="testimonial-grid">
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">"The lab queue was 4 days out and my capstone demo was in 48 hours. PrintHub saved me. Part came out cleaner than anything I've ever gotten from the school printers."</p>
+      <div class="testimonial-author">
+        <div class="avatar">MK</div>
+        <div>
+          <div class="author-name">Marcus K.</div>
+          <div class="author-prog">Mech Eng · 4th Year</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">"Used them for my ECE project enclosure. PETG print was perfect — tolerances were spot on and I didn't have to do any sanding. Price was way less than I expected."</p>
+      <div class="testimonial-author">
+        <div class="avatar">SP</div>
+        <div>
+          <div class="author-name">Sara P.</div>
+          <div class="author-prog">Electrical Eng · 3rd Year</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">"Ordered at 11pm, had my part by 9am the next morning. Honestly thought it was too good to be true but nope — they actually delivered. Will use again every semester."</p>
+      <div class="testimonial-author">
+        <div class="avatar">JL</div>
+        <div>
+          <div class="author-name">Jamie L.</div>
+          <div class="author-prog">Civil Eng · 2nd Year</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="faq-inner">
+    <div>
+      <div class="section-label">// FAQ</div>
+      <div class="section-title">Common Questions</div>
+      <p class="section-sub">Still not sure? Email us at <a href="mailto:prints@printhublondon.ca" style="color:var(--accent)">prints@printhublondon.ca</a> and we'll get back to you fast.</p>
+      <div style="margin-top:3rem;">
+        <div class="western-badge">🟣 Western University Area</div>
+        <p style="color:var(--muted);font-size:0.85rem;margin-top:1rem;line-height:1.7;">We're based near campus and know the labs, the course deadlines, and the design standards that Western profs expect.</p>
+      </div>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          How do I get a quote? <span class="faq-arrow">+</span>
+        </div>
+        <div class="faq-a">Upload your STL, OBJ, or 3MF file and our system will calculate an instant quote based on material volume, your chosen settings, and turnaround time.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          What's the fastest turnaround? <span class="faq-arrow">+</span>
+        </div>
+        <div class="faq-a">Our Rush tier guarantees 24-hour turnaround for most prints. For small, simple parts, we can often do same-day. Contact us directly for urgent requests.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Where can I pick up my print? <span class="faq-arrow">+</span>
+        </div>
+        <div class="faq-a">We have a pickup location near Western's campus in London, ON. We also offer flat-rate $5 delivery anywhere within London city limits.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Do you offer student discounts? <span class="faq-arrow">+</span>
+        </div>
+        <div class="faq-a">Our pricing is already student-first. Show your Western student ID for 10% off your first order. Bulk print discounts are also available for design teams and clubs.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          What file formats do you accept? <span class="faq-arrow">+</span>
+        </div>
+        <div class="faq-a">We accept STL, OBJ, 3MF, and STEP files. If your model is in a different format (SolidWorks, Fusion 360, etc.), export to one of these before uploading.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          What if my print fails? <span class="faq-arrow">+</span>
+        </div>
+        <div class="faq-a">We re-print at no charge if the failure is on our end. If there's an issue with your model file, we'll notify you before printing and work through it together.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo" style="font-size:2rem;display:block;margin-bottom:0.5rem">PRINT<span style="color:var(--accent)">HUB</span></a>
+      <p>London's 3D printing service for Western University engineering students. Fast, affordable, and built by students who get it.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#">FDM Printing</a></li>
+        <li><a href="#">Rush Orders</a></li>
+        <li><a href="#">Bulk Printing</a></li>
+        <li><a href="#">Design Help</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Info</h4>
+      <ul>
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#materials">Materials</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="mailto:prints@printhublondon.ca">Email Us</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Discord</a></li>
+        <li><a href="#">London, ON</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 PrintHub London · All rights reserved</span>
+    <span>Built for Western Eng 🟣</span>
+  </div>
+</footer>
+
+<script>
+  // FAQ toggle
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  // Intersection Observer for fade-in animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.material-card, .price-card, .why-item, .testimonial-card, .step').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+
+  // File upload handler
+  function handleFile(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const box = document.querySelector('.upload-box');
+    box.innerHTML = `
+      <div style="font-size:2rem;margin-bottom:1rem">✅</div>
+      <div class="upload-text">${file.name}</div>
+      <div class="upload-sub" style="margin-top:0.5rem">File received! We'll email you a quote shortly.</div>
+      <p style="margin-top:1.5rem;font-size:0.8rem;color:var(--muted)">Or send directly to <a href="mailto:prints@printhublondon.ca" style="color:var(--accent)">prints@printhublondon.ca</a></p>
+    `;
+    box.style.borderColor = 'var(--accent)';
+  }
+
+  // Drag and drop
+  const uploadBox = document.querySelector('.upload-box');
+  uploadBox.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadBox.style.borderColor = 'var(--accent)';
+    uploadBox.style.background = 'rgba(255,77,0,0.05)';
+  });
+  uploadBox.addEventListener('dragleave', () => {
+    uploadBox.style.borderColor = 'var(--border)';
+    uploadBox.style.background = 'transparent';
+  });
+  uploadBox.addEventListener('drop', (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file) handleFile({ target: { files: [file] } });
+  });
+</script>
+</body>
+</html>

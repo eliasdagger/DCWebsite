@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Macro — Dagher Capital</title>
+  <link rel="preload" as="image" href="DC__White_Transparent.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #0a0a0a; --white: #f5f4f0; --gold: #b8963e;
+      --gold-light: #d4af6a; --gold-dim: rgba(184,150,62,0.15);
+      --mid: #1a1a1a; --border: rgba(184,150,62,0.25); --text-muted: #888;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--black); color: var(--white); font-family: 'Montserrat', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 28px 60px; background: rgba(10,10,10,0.97); border-bottom: 1px solid rgba(184,150,62,0.2); backdrop-filter: blur(2px); }
+    .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--white); text-decoration: none; display: flex; align-items: center; }
+    .nav-logo img { height: 20px; width: auto; position: relative; bottom: 4px; margin-right: 10px; }
+    .nav-logo span { color: var(--gold); letter-spacing: 1px; }
+    .nav-links { display: flex; gap: 42px; list-style: none; }
+    .nav-links a { color: var(--white); text-decoration: none; font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 400; opacity: 0.75; transition: opacity 0.2s, color 0.2s; position: relative; }
+    .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: var(--gold); transition: width 0.3s ease; }
+    .nav-links a:hover, .nav-links a.active { opacity: 1; color: var(--gold-light); }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+
+    /* PAGE HERO */
+    .page-hero { padding: 160px 60px 80px; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+    .page-hero::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(184,150,62,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(184,150,62,0.03) 1px, transparent 1px); background-size: 80px 80px; }
+    .page-hero::after { content: 'MACRO'; position: absolute; right: 40px; bottom: -20px; font-family: 'Cormorant Garamond', serif; font-size: 200px; font-weight: 300; color: rgba(255,255,255,0.02); letter-spacing: 20px; pointer-events: none; line-height: 1; }
+    .hero-inner { position: relative; z-index: 1; max-width: 700px; }
+    .page-eyebrow { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; font-weight: 500; display: flex; align-items: center; gap: 14px; }
+    .page-eyebrow::before { content: ''; display: block; width: 40px; height: 1px; background: var(--gold); }
+    .page-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(52px, 5vw, 80px); font-weight: 300; line-height: 1.05; margin-bottom: 24px; }
+    .page-title em { font-style: italic; color: var(--gold-light); }
+    .page-subtitle { font-size: 13px; line-height: 2; color: var(--text-muted); max-width: 520px; }
+
+    /* MACRO DASHBOARD */
+    #dashboard { padding: 60px 60px 0; background: var(--mid); border-bottom: 1px solid var(--border); }
+    .dashboard-label { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 28px; font-weight: 500; display: flex; align-items: center; gap: 14px; }
+    .dashboard-label::before { content: ''; display: block; width: 30px; height: 1px; background: var(--gold); }
+    .indicators { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--border); margin-bottom: 0; }
+    .indicator { background: var(--mid); padding: 32px 28px; position: relative; overflow: hidden; }
+    .indicator::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; }
+    .ind-up::after { background: #5ab88a; }
+    .ind-down::after { background: #e57373; }
+    .ind-neutral::after { background: var(--gold); }
+    .ind-category { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+    .ind-name { font-size: 12px; font-weight: 500; margin-bottom: 14px; }
+    .ind-value { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; line-height: 1; margin-bottom: 6px; }
+    .ind-change { font-size: 11px; display: flex; align-items: center; gap: 6px; }
+    .up { color: #5ab88a; }
+    .down { color: #e57373; }
+    .neutral { color: var(--gold); }
+    .ind-sub { font-size: 9px; color: var(--text-muted); margin-top: 8px; letter-spacing: 1px; }
+    @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
+    .live-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #5ab88a; margin-right: 6px; animation: pulse 2s infinite; }
+
+    /* THEME FILTERS */
+    #articles { padding: 80px 60px; }
+    .articles-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; flex-wrap: wrap; gap: 20px; }
+    .section-eyebrow { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; font-weight: 500; display: flex; align-items: center; gap: 14px; }
+    .section-eyebrow::before { content: ''; display: block; width: 30px; height: 1px; background: var(--gold); }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(38px, 4vw, 58px); font-weight: 300; line-height: 1.15; }
+    .section-title em { font-style: italic; color: var(--gold-light); }
+    .filter-tabs { display: flex; gap: 0; border: 1px solid var(--border); flex-wrap: wrap; }
+    .filter-tab { padding: 10px 20px; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-right: 1px solid var(--border); font-weight: 500; background: transparent; color: var(--text-muted); border-top: none; border-left: none; border-bottom: none; transition: background 0.2s, color 0.2s; font-family: 'Montserrat', sans-serif; }
+    .filter-tab:last-child { border-right: none; }
+    .filter-tab.active, .filter-tab:hover { background: var(--gold); color: var(--black); }
+
+    /* FEATURED ARTICLE */
+    .featured { display: grid; grid-template-columns: 1.4fr 1fr; gap: 1px; background: var(--border); margin-bottom: 1px; }
+    .featured-main { background: var(--mid); padding: 52px 48px; position: relative; overflow: hidden; cursor: pointer; transition: background 0.3s; }
+    .featured-main:hover { background: #1f1f1f; }
+    .featured-main::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gold); }
+    .featured-tag { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; font-weight: 500; }
+    .featured-title { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-weight: 300; line-height: 1.2; margin-bottom: 20px; }
+    .featured-title em { font-style: italic; color: var(--gold-light); }
+    .featured-excerpt { font-size: 13px; color: var(--text-muted); line-height: 2; margin-bottom: 32px; }
+    .featured-meta { display: flex; align-items: center; gap: 20px; }
+    .featured-author { font-size: 11px; letter-spacing: 1px; }
+    .featured-date { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; }
+    .featured-read { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
+    .featured-side { display: flex; flex-direction: column; gap: 1px; background: var(--border); }
+    .side-article { background: var(--mid); padding: 32px 36px; flex: 1; cursor: pointer; transition: background 0.3s; position: relative; overflow: hidden; }
+    .side-article:hover { background: #1f1f1f; }
+    .side-article::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
+    .side-article:hover::after { transform: scaleX(1); }
+    .sa-tag { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+    .sa-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; line-height: 1.3; margin-bottom: 12px; }
+    .sa-excerpt { font-size: 12px; color: var(--text-muted); line-height: 1.8; margin-bottom: 16px; }
+    .sa-meta { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; }
+
+    /* ARTICLE GRID */
+    .article-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); margin-bottom: 1px; }
+    .article-card { background: var(--black); padding: 40px 36px; cursor: pointer; transition: background 0.3s; position: relative; overflow: hidden; }
+    .article-card:hover { background: #0f0f0f; }
+    .article-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; }
+    .article-card:hover::after { transform: scaleX(1); }
+    .ac-tag { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 500; }
+    .ac-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 300; line-height: 1.3; margin-bottom: 14px; }
+    .ac-excerpt { font-size: 12px; color: var(--text-muted); line-height: 1.9; margin-bottom: 20px; }
+    .ac-meta { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; }
+    .ac-author { font-size: 10px; letter-spacing: 1px; }
+    .ac-date { font-size: 10px; color: var(--text-muted); }
+
+    /* THEMES SECTION */
+    #themes { padding: 100px 60px; background: var(--mid); }
+    .themes-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: var(--border); margin-top: 60px; }
+    .theme-card { background: var(--mid); padding: 40px 32px; transition: background 0.3s; cursor: pointer; position: relative; overflow: hidden; }
+    .theme-card:hover { background: #1f1f1f; }
+    .theme-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.4s; }
+    .theme-card:hover::before { transform: scaleX(1); }
+    .theme-icon { font-size: 32px; margin-bottom: 20px; }
+    .theme-name { font-size: 13px; letter-spacing: 2px; text-transform: uppercase; font-weight: 500; margin-bottom: 12px; }
+    .theme-desc { font-size: 12px; color: var(--text-muted); line-height: 1.9; margin-bottom: 20px; }
+    .theme-count { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
+
+    /* NEWSLETTER */
+    #newsletter { padding: 100px 60px; text-align: center; border-top: 1px solid var(--border); }
+    #newsletter .section-eyebrow { justify-content: center; }
+    #newsletter .section-eyebrow::before { display: none; }
+    #newsletter .section-title { text-align: center; margin-bottom: 16px; }
+    #newsletter p { font-size: 13px; color: var(--text-muted); line-height: 2; max-width: 440px; margin: 0 auto 40px; }
+    .newsletter-form { display: flex; gap: 0; max-width: 440px; margin: 0 auto; }
+    .newsletter-form input { flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-right: none; padding: 14px 20px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 12px; outline: none; transition: border-color 0.3s; }
+    .newsletter-form input:focus { border-color: var(--gold); }
+    .newsletter-form button { background: var(--gold); color: var(--black); border: none; padding: 14px 28px; font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; cursor: pointer; transition: background 0.3s; white-space: nowrap; }
+    .newsletter-form button:hover { background: var(--gold-light); }
+
+    /* FOOTER */
+    footer { background: var(--black); border-top: 1px solid var(--border); padding: 60px 60px 40px; }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 50px; }
+    .footer-brand .brand-name { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 16px; }
+    .footer-brand .brand-name span { color: var(--gold); }
+    .footer-brand p { font-size: 11px; color: var(--text-muted); line-height: 2; max-width: 280px; }
+    .footer-col h4 { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .footer-col ul a { color: var(--text-muted); text-decoration: none; font-size: 12px; transition: color 0.2s; }
+    .footer-col ul a:hover { color: var(--white); }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.06); padding-top: 30px; display: flex; justify-content: space-between; align-items: center; }
+    .footer-bottom p { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; }
+    .footer-bottom .disclaimer { font-size: 9px; color: rgba(136,136,136,0.5); max-width: 400px; line-height: 1.8; text-align: right; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { opacity: 0; animation: fadeUp 0.8s ease forwards; }
+    .d1{animation-delay:0.1s} .d2{animation-delay:0.3s} .d3{animation-delay:0.5s}
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .gold-divider { width: 60px; height: 1px; background: var(--gold); margin: 24px 0; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="index.html">
+      <img src="Dagher__White_Transparent.png" alt="Dagher" style="height:20px; width:auto; display:inline-block; position:relative; bottom:3px; margin-right:10px;" />
+      <span style="color: var(--gold); letter-spacing: 2px;">CAPITAL</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="investments.html">Investments</a></li>
+      <li><a href="macro.html" class="active">Macro</a></li>
+      <li><a href="consulting.html">Consulting</a></li>
+      <li><a href="quant.html">Quant</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="hero-inner">
+      <div class="page-eyebrow fade-in d1">Global Macro Research</div>
+      <h1 class="page-title fade-in d2">The World <em>Moves</em><br/>Markets</h1>
+      <p class="page-subtitle fade-in d3">The macro environment is the single most important driver of economic growth both for an economy and individual companies. Here at DC we weigh the macro environment as the most significant consideration of any trade.</p>
+    </div>
+  </div>
+
+  <!-- LIVE INDICATORS DASHBOARD -->
+  <div id="dashboard">
+    <div class="dashboard-label"><span class="live-dot"></span>Key Macro Indicators</div>
+    <div class="indicators">
+      <div class="indicator ind-neutral">
+        <div class="ind-category">Energy</div>
+        <div class="ind-name">Brent Crude</div>
+        <div class="ind-value">$87.40</div>
+        <div class="ind-change neutral">▲ +1.2% today</div>
+        <div class="ind-sub">Hormuz premium elevated</div>
+      </div>
+      <div class="indicator ind-neutral">
+        <div class="ind-category">Monetary Policy</div>
+        <div class="ind-name">Fed Funds Rate</div>
+        <div class="ind-value">4.50%</div>
+        <div class="ind-change neutral">— Unchanged</div>
+        <div class="ind-sub">Next decision: May '26</div>
+      </div>
+      <div class="indicator ind-down">
+        <div class="ind-category">Inflation</div>
+        <div class="ind-name">US CPI (YoY)</div>
+        <div class="ind-value">3.2%</div>
+        <div class="ind-change down">▼ −0.3% vs prior</div>
+        <div class="ind-sub">Core: 3.8%</div>
+      </div>
+      <div class="indicator ind-up">
+        <div class="ind-category">Fixed Income</div>
+        <div class="ind-name">10Y Treasury</div>
+        <div class="ind-value">4.31%</div>
+        <div class="ind-change up">▲ +8bps</div>
+        <div class="ind-sub">Yield curve: −18bps</div>
+      </div>
+      <div class="indicator ind-up">
+        <div class="ind-category">FX</div>
+        <div class="ind-name">DXY Index</div>
+        <div class="ind-value">104.2</div>
+        <div class="ind-change up">▲ +0.4%</div>
+        <div class="ind-sub">USD broadly stronger</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARTICLES -->
+  <section id="articles">
+    <div class="articles-header reveal">
+      <div>
+        <div class="section-eyebrow">Research & Commentary</div>
+        <h2 class="section-title">Our <em>Latest</em> Reports</h2>
+      </div>
+      <div class="filter-tabs">
+        <button class="filter-tab active" onclick="filterArticles('all', this)">All</button>
+        <button class="filter-tab" onclick="filterArticles('energy', this)">Energy</button>
+        <button class="filter-tab" onclick="filterArticles('rates', this)">Rates</button>
+        <button class="filter-tab" onclick="filterArticles('inflation', this)">Inflation</button>
+        <button class="filter-tab" onclick="filterArticles('geopolitics', this)">Geopolitics</button>
+        <button class="filter-tab" onclick="filterArticles('fx', this)">FX</button>
+      </div>
+    </div>
+
+    <!-- FEATURED -->
+    <div class="featured reveal" data-category="energy geopolitics">
+      <div class="featured-main">
+        <div class="featured-tag">⚡ Featured · Energy · Geopolitics</div>
+        <h2 class="featured-title">The Strait of Hormuz:<br/><em>The World's Most Important</em> Chokepoint</h2>
+        <p class="featured-excerpt">Roughly 20% of the world's oil supply passes through a 33-kilometre wide channel between Iran and Oman every single day. As tensions in the Persian Gulf escalate, the Strait of Hormuz has re-entered the conversation as the single biggest tail risk in global energy markets. We break down the geography, the players, and what a disruption would mean for Brent, global inflation, and your portfolio.</p>
+        <div class="featured-meta">
+          <span class="featured-author">Elie Dagher</span>
+          <span class="featured-date">April 24, 2026</span>
+          <span class="featured-read">8 min read →</span>
+        </div>
+      </div>
+      <div class="featured-side">
+        <div class="side-article" data-category="rates">
+          <div class="sa-tag">Rates</div>
+          <h3 class="sa-title">--</h3>
+          <p class="sa-excerpt">--</p>
+          <div class="sa-meta">Saiprasad Venkataraman · April --, 2026 · 6 min</div>
+        </div>
+        <div class="side-article" data-category="inflation">
+          <div class="sa-tag">Inflation</div>
+          <h3 class="sa-title">--</h3>
+          <p class="sa-excerpt">--</p>
+          <div class="sa-meta">-Name- · April , 2026 · 5 min</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARTICLE GRID -->
+    <div class="article-grid reveal">
+      <div class="article-card" data-category="geopolitics">
+        <div class="ac-tag">Geopolitics</div>
+        <h3 class="ac-title">--</h3>
+        <p class="ac-excerpt">--</p>
+        <div class="ac-meta"><span class="ac-author">James Dagher</span><span class="ac-date">Apr 5, 2026</span></div>
+      </div>
+      <div class="article-card" data-category="rates fx">
+        <div class="ac-tag">FX · Rates</div>
+        <h3 class="ac-title">Dollar Dominance: How Much Longer Can It Last?</h3>
+        <p class="ac-excerpt"></p>
+        <div class="ac-meta"><span class="ac-author">Lena Nader</span><span class="ac-date">Mar 28, 2026</span></div>
+      </div>
+      <div class="article-card" data-category="energy">
+        <div class="ac-tag">Energy</div>
+        <h3 class="ac-title">--</h3>
+        <p class="ac-excerpt">--</p>
+        <div class="ac-meta"><span class="ac-author">Sara Khoury</span><span class="ac-date">Mar 22, 2026</span></div>
+      </div>
+      <div class="article-card" data-category="inflation rates">
+        <div class="ac-tag">Inflation · Rates</div>
+        <h3 class="ac-title">--</h3>
+        <p class="ac-excerpt">--</p>
+        <div class="ac-meta"><span class="ac-author">Michael Azar</span><span class="ac-date">Mar 15, 2026</span></div>
+      </div>
+      <div class="article-card" data-category="geopolitics energy">
+        <div class="ac-tag">Geopolitics · Energy</div>
+        <h3 class="ac-title">--</h3>
+        <p class="ac-excerpt">--</p>
+        <div class="ac-meta"><span class="ac-author">James Dagher</span><span class="ac-date">Mar 10, 2026</span></div>
+      </div>
+      <div class="article-card" data-category="fx rates">
+        <div class="ac-tag">FX · EM</div>
+        <h3 class="ac-title">--</h3>
+        <p class="ac-excerpt">--</p>
+        <div class="ac-meta"><span class="ac-author">Lena Nader</span><span class="ac-date">Mar 4, 2026</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THEMES -->
+  <section id="themes">
+    <div class="reveal">
+      <div class="section-eyebrow">Coverage Themes</div>
+      <h2 class="section-title">What We <em>Watch</em></h2>
+    </div>
+    <div class="themes-grid reveal">
+      <div class="theme-card">
+        <div class="theme-icon">🛢</div>
+        <div class="theme-name">Energy & Oil</div>
+        <div class="theme-desc">OPEC+ dynamics, supply chokepoints, the Strait of Hormuz, the energy transition, and what oil prices mean for inflation and central banks.</div>
+        <div class="theme-count">1 articles</div>
+      </div>
+      <div class="theme-card">
+        <div class="theme-icon">🏦</div>
+        <div class="theme-name">Interest Rates</div>
+        <div class="theme-desc">Fed policy, the yield curve, central bank divergence globally, and how the rate environment flows through to equities, credit, and real assets.</div>
+        <div class="theme-count">0 articles</div>
+      </div>
+      <div class="theme-card">
+        <div class="theme-icon">📈</div>
+        <div class="theme-name">Inflation</div>
+        <div class="theme-desc">CPI decomposition, services vs. goods, wage dynamics, shelter inflation, and the structural drivers that make the last mile back to 2% so difficult.</div>
+        <div class="theme-count">0 articles</div>
+      </div>
+      <div class="theme-card">
+        <div class="theme-icon">🌍</div>
+        <div class="theme-name">Geopolitics</div>
+        <div class="theme-desc">How conflict, sanctions, trade wars, and great power competition reshape supply chains, capital flows, and the investment landscape across asset classes.</div>
+        <div class="theme-count">1 articles</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section id="newsletter">
+    <div class="reveal">
+      <div class="section-eyebrow">Stay Informed</div>
+      <h2 class="section-title">Macro <em>Weekly</em></h2>
+      <p>--</p>
+      <div class="newsletter-form">
+        <input type="email" placeholder="your@email.com" />
+        <button>Subscribe →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="brand-name">DAGHER <span>CAPITAL</span></div>
+        <p>A research-driven investment firm dedicated to generating significant long-term returns through rigorous fundamental and macro analysis.</p>
+      </div>
+      <div class="footer-col"><h4>Firm</h4><ul><li><a href="index.html#about">About Us</a></li><li><a href="index.html#team">Our Team</a></li></ul></div>
+      <div class="footer-col"><h4>Divisions</h4><ul><li><a href="investments.html">Investments</a></li><li><a href="macro.html">Macro</a></li><li><a href="consulting.html">Consulting</a></li><li><a href="quant.html">Quant</a></li></ul></div>
+      <div class="footer-col"><h4>Legal</h4><ul><li><a href="index.html#contact">Contact</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Disclaimer</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Dagher Capital. All rights reserved.</p>
+      <p class="disclaimer">Macro commentary is for informational purposes only and does not constitute investment advice.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80); });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Filter tabs
+    function filterArticles(category, btn) {
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      const cards = document.querySelectorAll('.article-card, .featured, .side-article');
+      cards.forEach(card => {
+        const cats = card.dataset.category || '';
+        if (category === 'all' || cats.includes(category)) {
+          card.style.opacity = '1';
+          card.style.pointerEvents = 'auto';
+        } else {
+          card.style.opacity = '0.2';
+          card.style.pointerEvents = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>

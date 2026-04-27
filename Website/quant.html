@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quant — Dagher Capital</title>
+  <link rel="preload" as="image" href="DC__White_Transparent.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #0a0a0a; --white: #f5f4f0; --gold: #b8963e;
+      --gold-light: #d4af6a; --gold-dim: rgba(184,150,62,0.15);
+      --mid: #1a1a1a; --border: rgba(184,150,62,0.25); --text-muted: #888;
+      --green: #5ab88a; --blue: #4fc3f7;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--black); color: var(--white); font-family: 'Montserrat', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 28px 60px; background: rgba(10,10,10,0.97); border-bottom: 1px solid rgba(184,150,62,0.2); backdrop-filter: blur(2px); }
+    .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--white); text-decoration: none; display: flex; align-items: center;}
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 42px; list-style: none; }
+    .nav-links a { color: var(--white); text-decoration: none; font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 400; opacity: 0.75; transition: opacity 0.2s, color 0.2s; position: relative; }
+    .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: var(--gold); transition: width 0.3s ease; }
+    .nav-links a:hover, .nav-links a.active { opacity: 1; color: var(--gold-light); }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+
+    /* HERO with animated code bg */
+    .page-hero {
+      padding: 160px 60px 100px; position: relative; overflow: hidden;
+      border-bottom: 1px solid var(--border);
+      min-height: 480px; display: flex; align-items: center;
+    }
+    .code-bg {
+      position: absolute; inset: 0; z-index: 0; overflow: hidden;
+      opacity: 0.06; font-family: 'JetBrains Mono', monospace; font-size: 11px;
+      color: var(--gold); line-height: 1.8; padding: 20px;
+      pointer-events: none; white-space: pre;
+    }
+    .page-hero::before {
+      content: ''; position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(90deg, rgba(10,10,10,1) 40%, rgba(10,10,10,0.6) 100%);
+    }
+    .page-hero-inner { position: relative; z-index: 2; max-width: 680px; }
+    .page-eyebrow { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; font-weight: 500; display: flex; align-items: center; gap: 14px; }
+    .page-eyebrow::before { content: ''; display: block; width: 40px; height: 1px; background: var(--gold); }
+    .page-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(52px, 5vw, 80px); font-weight: 300; line-height: 1.05; margin-bottom: 24px; }
+    .page-title em { font-style: italic; color: var(--gold-light); }
+    .page-subtitle { font-size: 13px; line-height: 2; color: var(--text-muted); max-width: 520px; }
+
+    section { padding: 100px 60px; }
+    .section-eyebrow { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; font-weight: 500; display: flex; align-items: center; gap: 14px; }
+    .section-eyebrow::before { content: ''; display: block; width: 30px; height: 1px; background: var(--gold); }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(38px, 4vw, 58px); font-weight: 300; line-height: 1.15; margin-bottom: 20px; }
+    .section-title em { font-style: italic; color: var(--gold-light); }
+    .gold-divider { width: 60px; height: 1px; background: var(--gold); margin: 24px 0; }
+    .btn-primary { background: var(--gold); color: var(--black); border: none; padding: 16px 38px; font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 600; cursor: pointer; transition: background 0.3s, transform 0.2s; text-decoration: none; display: inline-block; }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .btn-ghost { color: var(--white); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; display: flex; align-items: center; gap: 10px; opacity: 0.6; transition: opacity 0.2s; }
+    .btn-ghost:hover { opacity: 1; }
+    .btn-ghost::after { content: '→'; font-size: 16px; }
+
+    /* LIVE TICKER STRIP */
+    .ticker-strip {
+      background: var(--mid); border-bottom: 1px solid var(--border);
+      padding: 0; overflow: hidden; height: 44px; display: flex; align-items: center;
+    }
+    .ticker-label { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); padding: 0 24px; flex-shrink: 0; border-right: 1px solid var(--border); height: 100%; display: flex; align-items: center; }
+    .ticker-track { display: flex; gap: 0; overflow: hidden; flex: 1; }
+    .ticker-inner { display: flex; gap: 40px; animation: ticker 30s linear infinite; white-space: nowrap; }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .tick-item { font-family: 'JetBrains Mono', monospace; font-size: 11px; display: flex; gap: 10px; align-items: center; flex-shrink: 0; }
+    .tick-sym { font-weight: 400; color: var(--white); }
+    .tick-val { color: var(--text-muted); }
+    .tick-chg.pos { color: var(--green); }
+    .tick-chg.neg { color: #e57373; }
+
+    /* ALGO OVERVIEW */
+    #overview { background: var(--mid); }
+    .overview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .overview-text p { font-size: 13px; line-height: 2.2; color: var(--text-muted); margin-bottom: 18px; }
+    .overview-text p:first-of-type { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 300; color: rgba(245,244,240,0.85); line-height: 1.8; }
+    .stack-list { display: flex; flex-direction: column; gap: 2px; }
+    .stack-item { padding: 18px 24px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 18px; transition: border-color 0.2s, background 0.2s; }
+    .stack-item:hover { border-color: var(--border); background: rgba(184,150,62,0.04); }
+    .stack-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--gold); background: var(--gold-dim); padding: 3px 10px; border-radius: 2px; flex-shrink: 0; }
+    .stack-name { font-size: 12px; font-weight: 400; }
+    .stack-purpose { font-size: 11px; color: var(--text-muted); margin-left: auto; text-align: right; }
+
+    /* STRATEGIES */
+    #strategies { }
+    .strategies-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--border); margin-top: 60px; }
+    .strat-card { background: var(--black); padding: 44px 36px; position: relative; overflow: hidden; transition: background 0.3s; }
+    .strat-card:hover { background: #0f0f0f; }
+    .strat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+    .strat-card.momentum::before { background: var(--gold); }
+    .strat-card.mean-rev::before { background: var(--blue); }
+    .strat-card.ml::before { background: var(--green); }
+    .strat-type { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 14px; font-weight: 500; }
+    .strat-card.momentum .strat-type { color: var(--gold); }
+    .strat-card.mean-rev .strat-type { color: var(--blue); }
+    .strat-card.ml .strat-type { color: var(--green); }
+    .strat-name { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 300; margin-bottom: 20px; line-height: 1.2; }
+    .strat-desc { font-size: 12px; color: var(--text-muted); line-height: 1.9; margin-bottom: 28px; }
+    .strat-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 24px; }
+    .sm-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+    .sm-val { font-family: 'Cormorant Garamond', serif; font-size: 22px; }
+    .sm-val.gold { color: var(--gold-light); }
+    .sm-val.green { color: var(--green); }
+    .sm-val.blue { color: var(--blue); }
+    .strat-status { margin-top: 20px; display: flex; align-items: center; gap: 8px; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .status-dot.live { background: var(--green); animation: pulse 2s infinite; }
+    .status-dot.dev { background: var(--gold); }
+    .status-dot.research { background: var(--text-muted); }
+    @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
+
+    /* BACKTEST */
+    #backtest { background: var(--mid); }
+    .backtest-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 2px; background: var(--border); margin-top: 60px; }
+    .bt-chart { background: var(--mid); padding: 44px; }
+    .bt-chart-title { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 32px; }
+    .bt-chart-wrap { height: 240px; position: relative; }
+    .bt-metrics { background: var(--mid); padding: 44px; display: flex; flex-direction: column; gap: 24px; }
+    .bt-metric { padding: 22px; border: 1px solid rgba(255,255,255,0.06); }
+    .bt-metric-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+    .bt-metric-val { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-weight: 300; line-height: 1; }
+    .bt-metric-val.green { color: var(--green); }
+    .bt-metric-val.gold { color: var(--gold-light); }
+    .bt-metric-sub { font-size: 10px; color: var(--text-muted); margin-top: 6px; }
+
+    /* TEAM */
+    #quant-team { }
+    .quant-team-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2px; background: var(--border); margin-top: 60px; }
+    .qt-card { background: var(--black); padding: 40px 32px; transition: background 0.3s; }
+    .qt-card:hover { background: #0f0f0f; }
+    .qt-initial { width: 56px; height: 56px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; color: var(--gold); margin-bottom: 24px; }
+    .qt-name { font-size: 14px; font-weight: 500; letter-spacing: 1px; margin-bottom: 4px; }
+    .qt-role { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+    .qt-focus { font-size: 10px; color: var(--text-muted); margin-bottom: 12px; }
+    .qt-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .qt-tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--gold); background: var(--gold-dim); padding: 3px 8px; }
+
+    /* JOIN */
+    #join { background: var(--mid); }
+    .join-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .join-text p { font-size: 13px; line-height: 2.2; color: var(--text-muted); margin-bottom: 18px; }
+    .requirements { display: flex; flex-direction: column; gap: 16px; }
+    .req-item { display: flex; align-items: flex-start; gap: 16px; padding: 20px 24px; border: 1px solid rgba(255,255,255,0.05); transition: border-color 0.3s; }
+    .req-item:hover { border-color: var(--border); }
+    .req-icon { color: var(--gold); font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+    .req-text { font-size: 12px; color: var(--text-muted); line-height: 1.7; }
+    .req-text strong { color: var(--white); font-weight: 500; display: block; margin-bottom: 4px; }
+
+    footer { background: var(--black); border-top: 1px solid var(--border); padding: 60px 60px 40px; }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 50px; }
+    .footer-brand .brand-name { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 16px; }
+    .footer-brand .brand-name span { color: var(--gold); }
+    .footer-brand p { font-size: 11px; color: var(--text-muted); line-height: 2; max-width: 280px; }
+    .footer-col h4 { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .footer-col ul a { color: var(--text-muted); text-decoration: none; font-size: 12px; transition: color 0.2s; }
+    .footer-col ul a:hover { color: var(--white); }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.06); padding-top: 30px; display: flex; justify-content: space-between; align-items: center; }
+    .footer-bottom p { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; }
+    .footer-bottom .disclaimer { font-size: 9px; color: rgba(136,136,136,0.5); max-width: 400px; line-height: 1.8; text-align: right; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { opacity: 0; animation: fadeUp 0.8s ease forwards; }
+    .d1{animation-delay:0.1s} .d2{animation-delay:0.3s} .d3{animation-delay:0.5s}
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="index.html"><img src="Dagher__White_Transparent.png" alt="Dagher" style="height:20px; width:auto; display:inline-block; position:relative; bottom:3px; margin-right:10px;" /> <span>CAPITAL</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="investments.html">Investments</a></li>
+      <li><a href="macro.html">Macro</a></li>
+      <li><a href="consulting.html">Consulting</a></li>
+      <li><a href="quant.html" class="active">Quant</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="code-bg" id="code-bg"></div>
+    <div class="page-hero-inner">
+      <div class="page-eyebrow fade-in d1">Quantitative Division</div>
+      <h1 class="page-title fade-in d2">Algorithms<br/>Built to <em>Beat</em><br/>the Market</h1>
+      <p class="page-subtitle fade-in d3">A team of computer science students and finance analysts collaborating to design, backtest, and deploy systematic trading strategies — where code meets capital.</p>
+    </div>
+  </div>
+
+  <!-- TICKER STRIP -->
+  <div class="ticker-strip">
+    <div class="ticker-label">Live Feed</div>
+    <div class="ticker-track">
+      <div class="ticker-inner" id="ticker-inner"></div>
+    </div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <section id="overview">
+    <div class="overview-grid reveal">
+      <div class="overview-text">
+        <div class="section-eyebrow">The Division</div>
+        <h2 class="section-title">Human Insight.<br/><em>Machine</em> Precision.</h2>
+        <div style="width:60px;height:1px;background:var(--gold);margin:24px 0 28px"></div>
+        <p>DC Quant is our algorithmic trading division, a collaborative project between our investment team and a cohort of CS students from top Canadian universities.</p>
+        <p>We build algorithms that exploit market inefficiencies across timeframes: from intraday momentum to multi-week mean reversion. Every strategy is fully backtested before any real capital is deployed.</p>
+        <p>Our edge is the combination: domain knowledge from our fundamental analysts informing the signals our engineers code. Neither pure quant nor pure discretionary — but the best of both.</p>
+      </div>
+      <div>
+        <div class="section-eyebrow" style="margin-bottom:24px">Technology Stack</div>
+        <div class="stack-list">
+          <div class="stack-item"><span class="stack-tag">Python</span><span class="stack-name">Core Language</span><span class="stack-purpose">Strategy dev</span></div>
+          <div class="stack-item"><span class="stack-tag">pandas</span><span class="stack-name">Data Analysis</span><span class="stack-purpose">Signal processing</span></div>
+          <div class="stack-item"><span class="stack-tag">NumPy</span><span class="stack-name">Computation</span><span class="stack-purpose">Matrix ops</span></div>
+          <div class="stack-item"><span class="stack-tag">sklearn</span><span class="stack-name">Machine Learning</span><span class="stack-purpose">ML signals</span></div>
+          <div class="stack-item"><span class="stack-tag">backtrader</span><span class="stack-name">Backtesting</span><span class="stack-purpose">Strategy testing</span></div>
+          <div class="stack-item"><span class="stack-tag">Alpaca</span><span class="stack-name">Brokerage API</span><span class="stack-purpose">Live execution</span></div>
+          <div class="stack-item"><span class="stack-tag">PostgreSQL</span><span class="stack-name">Data Storage</span><span class="stack-purpose">Historical data</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STRATEGIES -->
+  <section id="strategies">
+    <div class="reveal">
+      <div class="section-eyebrow">Our Algorithms</div>
+      <h2 class="section-title">Active <em>Strategies</em></h2>
+    </div>
+    <div class="strategies-grid reveal">
+      <div class="strat-card momentum">
+        <div class="strat-type">Momentum</div>
+        <div class="strat-name">Cross-Sectional Momentum</div>
+        <div class="strat-desc">Ranks the S&P 500 universe by trailing 12-1 month returns, goes long the top quintile and short the bottom. Rebalanced monthly with volatility-adjusted position sizing.</div>
+        <div class="strat-metrics">
+          <div><div class="sm-label">Annualized Return</div><div class="sm-val gold">+24.3%</div></div>
+          <div><div class="sm-label">Sharpe Ratio</div><div class="sm-val gold">1.42</div></div>
+          <div><div class="sm-label">Max Drawdown</div><div class="sm-val" style="color:#e57373">−14.2%</div></div>
+          <div><div class="sm-label">Backtest Period</div><div class="sm-val" style="font-size:16px">2015–2026</div></div>
+        </div>
+        <div class="strat-status"><div class="status-dot live"></div><span style="color:var(--green)">Live — Paper Trading</span></div>
+      </div>
+      <div class="strat-card mean-rev">
+        <div class="strat-type">Mean Reversion</div>
+        <div class="strat-name">Pairs Trading Engine</div>
+        <div class="strat-desc">Identifies cointegrated stock pairs using the Engle-Granger test, then trades the spread when it deviates beyond 2 standard deviations. Z-score based entry and exit signals.</div>
+        <div class="strat-metrics">
+          <div><div class="sm-label">Annualized Return</div><div class="sm-val blue">+18.7%</div></div>
+          <div><div class="sm-label">Sharpe Ratio</div><div class="sm-val blue">1.78</div></div>
+          <div><div class="sm-label">Max Drawdown</div><div class="sm-val" style="color:#e57373">−8.6%</div></div>
+          <div><div class="sm-label">Backtest Period</div><div class="sm-val" style="font-size:16px">2018–2026</div></div>
+        </div>
+        <div class="strat-status"><div class="status-dot dev"></div><span style="color:var(--gold)">In Development</span></div>
+      </div>
+      <div class="strat-card ml">
+        <div class="strat-type">Machine Learning</div>
+        <div class="strat-name">ML Signal Classifier</div>
+        <div class="strat-desc">Random forest classifier trained on 40+ technical and fundamental features to predict 5-day forward returns. Feature importance analysis identifies the most predictive signals by sector and market regime.</div>
+        <div class="strat-metrics">
+          <div><div class="sm-label">Directional Acc.</div><div class="sm-val green">61.4%</div></div>
+          <div><div class="sm-label">Sharpe Ratio</div><div class="sm-val green">1.21</div></div>
+          <div><div class="sm-label">Max Drawdown</div><div class="sm-val" style="color:#e57373">−11.3%</div></div>
+          <div><div class="sm-label">Status</div><div class="sm-val" style="font-size:16px">Research</div></div>
+        </div>
+        <div class="strat-status"><div class="status-dot research"></div><span style="color:var(--text-muted)">Research Phase</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BACKTEST RESULTS -->
+  <section id="backtest">
+    <div class="reveal">
+      <div class="section-eyebrow">Backtesting</div>
+      <h2 class="section-title">Validated <em>Performance</em></h2>
+    </div>
+    <div class="backtest-grid reveal">
+      <div class="bt-chart">
+        <div class="bt-chart-title">Momentum Strategy — Cumulative Returns vs. SPY (2015–2026)</div>
+        <div class="bt-chart-wrap">
+          <svg width="100%" height="100%" viewBox="0 0 620 220" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="btGold" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#b8963e" stop-opacity="0.25"/>
+                <stop offset="100%" stop-color="#b8963e" stop-opacity="0"/>
+              </linearGradient>
+              <linearGradient id="btBlue" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#4fc3f7" stop-opacity="0.1"/>
+                <stop offset="100%" stop-color="#4fc3f7" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <!-- Grid -->
+            <line x1="0" y1="55" x2="620" y2="55" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+            <line x1="0" y1="110" x2="620" y2="110" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+            <line x1="0" y1="165" x2="620" y2="165" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+            <!-- Year labels -->
+            <text x="0" y="215" fill="rgba(255,255,255,0.25)" font-size="8" font-family="Montserrat">2015</text>
+            <text x="100" y="215" fill="rgba(255,255,255,0.25)" font-size="8" font-family="Montserrat">2017</text>
+            <text x="206" y="215" fill="rgba(255,255,255,0.25)" font-size="8" font-family="Montserrat">2019</text>
+            <text x="310" y="215" fill="rgba(255,255,255,0.25)" font-size="8" font-family="Montserrat">2021</text>
+            <text x="414" y="215" fill="rgba(255,255,255,0.25)" font-size="8" font-family="Montserrat">2023</text>
+            <text x="560" y="215" fill="rgba(255,255,255,0.25)" font-size="8" font-family="Montserrat">2026</text>
+            <!-- SPY benchmark -->
+            <path d="M0,160 C50,148 100,138 160,122 C220,105 270,108 320,92 C370,78 420,72 480,58 L620,44" fill="none" stroke="rgba(79,195,247,0.5)" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <!-- Strategy fill -->
+            <path d="M0,170 C40,152 80,130 140,108 C200,88 250,92 310,70 C370,48 420,38 480,22 L620,8 L620,210 L0,210 Z" fill="url(#btGold)"/>
+            <!-- Strategy line -->
+            <path d="M0,170 C40,152 80,130 140,108 C200,88 250,92 310,70 C370,48 420,38 480,22 L620,8" fill="none" stroke="#b8963e" stroke-width="2"/>
+            <!-- Labels -->
+            <text x="8" y="12" fill="#b8963e" font-size="9" font-family="Montserrat" letter-spacing="1">Strategy +312%</text>
+            <text x="8" y="48" fill="rgba(79,195,247,0.7)" font-size="9" font-family="Montserrat" letter-spacing="1">S&amp;P 500 +218%</text>
+          </svg>
+        </div>
+      </div>
+      <div class="bt-metrics">
+        <div class="bt-metric">
+          <div class="bt-metric-label">Cumulative Return</div>
+          <div class="bt-metric-val green">+312%</div>
+          <div class="bt-metric-sub">vs. S&P 500 +218%</div>
+        </div>
+        <div class="bt-metric">
+          <div class="bt-metric-label">Sharpe Ratio</div>
+          <div class="bt-metric-val gold">1.42</div>
+          <div class="bt-metric-sub">Risk-adjusted performance</div>
+        </div>
+        <div class="bt-metric">
+          <div class="bt-metric-label">Win Rate</div>
+          <div class="bt-metric-val green">58.3%</div>
+          <div class="bt-metric-sub">Monthly periods profitable</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUANT TEAM -->
+  <section id="quant-team">
+    <div class="reveal">
+      <div class="section-eyebrow">The Team</div>
+      <h2 class="section-title">Engineers &amp; <em>Analysts</em></h2>
+    </div>
+    <div class="quant-team-grid reveal">
+      <div class="qt-card">
+        <div class="qt-initial">L</div>
+        <div class="qt-name">Lena Nader</div>
+        <div class="qt-role">Quant Lead</div>
+        <div class="qt-focus">Strategy design &amp; validation</div>
+        <div class="qt-tags"><span class="qt-tag">Python</span><span class="qt-tag">Statistics</span><span class="qt-tag">Finance</span></div>
+      </div>
+      <div class="qt-card">
+        <div class="qt-initial">A</div>
+        <div class="qt-name">Alex Chen</div>
+        <div class="qt-role">ML Engineer</div>
+        <div class="qt-focus">Machine learning models</div>
+        <div class="qt-tags"><span class="qt-tag">sklearn</span><span class="qt-tag">PyTorch</span><span class="qt-tag">ML</span></div>
+      </div>
+      <div class="qt-card">
+        <div class="qt-initial">R</div>
+        <div class="qt-name">Ryan Park</div>
+        <div class="qt-role">Systems Engineer</div>
+        <div class="qt-focus">Execution &amp; infrastructure</div>
+        <div class="qt-tags"><span class="qt-tag">API</span><span class="qt-tag">PostgreSQL</span><span class="qt-tag">DevOps</span></div>
+      </div>
+      <div class="qt-card">
+        <div class="qt-initial">N</div>
+        <div class="qt-name">Nadia Hassan</div>
+        <div class="qt-role">Data Engineer</div>
+        <div class="qt-focus">Data pipelines &amp; signals</div>
+        <div class="qt-tags"><span class="qt-tag">pandas</span><span class="qt-tag">ETL</span><span class="qt-tag">NumPy</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOIN -->
+  <section id="join">
+    <div class="join-grid reveal">
+      <div class="join-text">
+        <div class="section-eyebrow">Join the Division</div>
+        <h2 class="section-title">We're <em>Recruiting</em><br/>CS Students</h2>
+        <div class="gold-divider"></div>
+        <p>Dagher Capital Quant is actively looking for computer science and engineering students who want to apply their technical skills to real financial markets. No finance background required — we'll teach you the markets. You bring the code.</p>
+        <p>This is not an internship. You'll be building real strategies, deploying real capital, and learning what it takes to build systematic edge in competitive markets.</p>
+        <br/>
+        <a href="index.html#contact" class="btn-primary">Apply to Join →</a>
+      </div>
+      <div class="requirements">
+        <div class="req-item"><div class="req-icon">◈</div><div class="req-text"><strong>Strong Python Skills</strong>Comfortable with pandas, NumPy, and data manipulation. Experience with APIs is a plus.</div></div>
+        <div class="req-item"><div class="req-icon">◉</div><div class="req-text"><strong>Statistical Foundations</strong>Understanding of regression, distributions, and hypothesis testing. Time series knowledge is highly valued.</div></div>
+        <div class="req-item"><div class="req-icon">▣</div><div class="req-text"><strong>Intellectual Curiosity</strong>Genuine interest in how markets work. You don't need to know everything — you need to want to figure it out.</div></div>
+        <div class="req-item"><div class="req-icon">◫</div><div class="req-text"><strong>Collaborative Mindset</strong>You'll be working closely with finance analysts. The ability to translate between technical and business language is essential.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand"><div class="brand-name">DAGHER <span>CAPITAL</span></div><p>A research-driven investment firm dedicated to generating superior long-term returns through rigorous fundamental analysis.</p></div>
+      <div class="footer-col"><h4>Firm</h4><ul><li><a href="index.html#about">About Us</a></li><li><a href="index.html#team">Our Team</a></li></ul></div>
+      <div class="footer-col"><h4>Divisions</h4><ul><li><a href="investments.html">Investments</a></li><li><a href="consulting.html">Consulting</a></li><li><a href="quant.html">Quant</a></li></ul></div>
+      <div class="footer-col"><h4>Legal</h4><ul><li><a href="index.html#contact">Contact</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Disclaimer</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Dagher Capital. All rights reserved.</p>
+      <p class="disclaimer">Algorithmic trading involves significant risk. Backtested results do not guarantee future performance. All strategies are tested with paper trading before live deployment.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Code background
+    const codeLines = [
+      'def momentum_signal(returns, lookback=252):',
+      '    scores = returns.rolling(lookback).mean()',
+      '    return scores.rank(pct=True)',
+      '',
+      'def pairs_zscore(spread, window=30):',
+      '    mu = spread.rolling(window).mean()',
+      '    sigma = spread.rolling(window).std()',
+      '    return (spread - mu) / sigma',
+      '',
+      'class MomentumStrategy(bt.Strategy):',
+      '    def next(self):',
+      '        signals = momentum_signal(self.data)',
+      '        for asset, score in signals.items():',
+      '            if score > 0.8: self.buy(asset)',
+      '            elif score < 0.2: self.sell(asset)',
+      '',
+      'def backtest(strategy, data, cash=100000):',
+      '    cerebro = bt.Cerebro()',
+      '    cerebro.addstrategy(strategy)',
+      '    cerebro.adddata(data)',
+      '    cerebro.broker.setcash(cash)',
+      '    results = cerebro.run()',
+      '    return cerebro.broker.getvalue()',
+      '',
+      'sharpe = (returns.mean() / returns.std()) * np.sqrt(252)',
+      'max_dd = (cum_returns / cum_returns.cummax() - 1).min()',
+    ];
+    document.getElementById('code-bg').textContent = (codeLines.join('\n') + '\n').repeat(4);
+
+    // Ticker strip
+    const tickers = [
+      {sym:'NVDA',val:'924.18',chg:'+2.4%',pos:true},{sym:'MSFT',val:'418.32',chg:'+0.9%',pos:true},
+      {sym:'AMZN',val:'183.74',chg:'+1.7%',pos:true},{sym:'BLK',val:'921.55',chg:'+0.6%',pos:true},
+      {sym:'JPM',val:'234.88',chg:'+1.1%',pos:true},{sym:'RTX',val:'123.44',chg:'−0.3%',pos:false},
+      {sym:'AAPL',val:'211.20',chg:'+0.5%',pos:true},{sym:'GOOGL',val:'167.88',chg:'+1.3%',pos:true},
+      {sym:'META',val:'512.90',chg:'+2.1%',pos:true},{sym:'TSLA',val:'248.10',chg:'−1.8%',pos:false},
+    ];
+    const inner = document.getElementById('ticker-inner');
+    const doubled = [...tickers, ...tickers];
+    doubled.forEach(t => {
+      const el = document.createElement('div');
+      el.className = 'tick-item';
+      el.innerHTML = `<span class="tick-sym">${t.sym}</span><span class="tick-val">$${t.val}</span><span class="tick-chg ${t.pos?'pos':'neg'}">${t.chg}</span>`;
+      inner.appendChild(el);
+    });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80); });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

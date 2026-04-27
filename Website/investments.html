@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="preload" as="image" href="DC__White_Transparent.png" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Investments — Dagher Capital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #0a0a0a; --white: #f5f4f0; --gold: #b8963e;
+      --gold-light: #d4af6a; --gold-dim: rgba(184,150,62,0.15);
+      --mid: #1a1a1a; --border: rgba(184,150,62,0.25); --text-muted: #888;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--black); color: var(--white); font-family: 'Montserrat', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 28px 60px;
+      background: rgba(10,10,10,0.97); border-bottom: 1px solid rgba(184,150,62,0.2);
+      backdrop-filter: blur(2px); transition: padding 0.3s;
+    }
+    .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--white); text-decoration: none; display: flex; align-items: center;}
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 42px; list-style: none; }
+    .nav-links a { color: var(--white); text-decoration: none; font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 400; opacity: 0.75; transition: opacity 0.2s, color 0.2s; position: relative; }
+    .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: var(--gold); transition: width 0.3s ease; }
+    .nav-links a:hover, .nav-links a.active { opacity: 1; color: var(--gold-light); }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+
+    /* PAGE HERO */
+    .page-hero {
+      padding: 160px 60px 80px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(135deg, #0a0a0a 0%, #111 100%);
+      position: relative; overflow: hidden;
+    }
+    .page-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(184,150,62,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(184,150,62,0.03) 1px, transparent 1px);
+      background-size: 80px 80px;
+    }
+    .page-hero-inner { position: relative; z-index: 1; }
+    .page-eyebrow { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; font-weight: 500; display: flex; align-items: center; gap: 14px; }
+    .page-eyebrow::before { content: ''; display: block; width: 40px; height: 1px; background: var(--gold); }
+    .page-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(52px, 5vw, 80px); font-weight: 300; line-height: 1.05; margin-bottom: 24px; }
+    .page-title em { font-style: italic; color: var(--gold-light); }
+    .page-subtitle { font-size: 13px; line-height: 2; color: var(--text-muted); max-width: 520px; }
+
+    section { padding: 100px 60px; }
+    .section-eyebrow { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; font-weight: 500; display: flex; align-items: center; gap: 14px; }
+    .section-eyebrow::before { content: ''; display: block; width: 30px; height: 1px; background: var(--gold); }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(38px, 4vw, 58px); font-weight: 300; line-height: 1.15; margin-bottom: 20px; }
+    .section-title em { font-style: italic; color: var(--gold-light); }
+    .gold-divider { width: 60px; height: 1px; background: var(--gold); margin: 24px 0; }
+
+    .btn-primary { background: var(--gold); color: var(--black); border: none; padding: 16px 38px; font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 600; cursor: pointer; transition: background 0.3s, transform 0.2s; text-decoration: none; display: inline-block; }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .btn-ghost { color: var(--white); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; display: flex; align-items: center; gap: 10px; opacity: 0.6; transition: opacity 0.2s; }
+    .btn-ghost:hover { opacity: 1; }
+    .btn-ghost::after { content: '→'; font-size: 16px; }
+
+    /* INVESTMENT MANAGEMENT INTRO */
+    #overview { background: var(--mid); }
+    .overview-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; background: var(--border); margin-top: 60px; }
+    .ov-card { background: var(--mid); padding: 44px 36px; }
+    .ov-icon { font-size: 28px; margin-bottom: 20px; }
+    .ov-title { font-size: 13px; letter-spacing: 2px; text-transform: uppercase; font-weight: 500; margin-bottom: 12px; }
+    .ov-desc { font-size: 12px; color: var(--text-muted); line-height: 1.9; }
+
+    /* SECTOR EXPOSURE */
+    #exposure { }
+    .exposure-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; margin-top: 60px; }
+    .pie-wrap { position: relative; width: 340px; height: 340px; margin: 0 auto; }
+    .pie-wrap svg { width: 100%; height: 100%; }
+    .pie-center {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      text-align: center; pointer-events: none;
+    }
+    
+    .pie-center-val { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; color: var(--white); }
+    .pie-center-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+    .legend { display: flex; flex-direction: column; gap: 16px; }
+    .legend-item { display: flex; align-items: center; gap: 16px; cursor: default; }
+    .legend-dot { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+    .legend-name { font-size: 13px; font-weight: 400; flex: 1; }
+    .legend-pct { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; }
+    .legend-bar-wrap { flex: 1; height: 2px; background: rgba(255,255,255,0.08); }
+    .legend-bar { height: 100%; transition: width 1s ease; }
+
+    /* ANALYST RATINGS */
+    #ratings { background: var(--mid); }
+    .ratings-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 60px; }
+    .research-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); }
+    .research-card { background: var(--mid); padding: 44px 36px; position: relative; overflow: hidden; transition: background 0.3s; }
+    .research-card:hover { background: #1f1f1f; }
+    .research-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; }
+    .research-card:hover::after { transform: scaleX(1); }
+    .rc-sector { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    .rc-ticker { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 300; margin-bottom: 4px; }
+    .rc-company { font-size: 12px; color: var(--text-muted); margin-bottom: 24px; }
+    .rc-rating-badge { display: inline-block; padding: 6px 16px; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; margin-bottom: 24px; }
+    .badge-buy { background: rgba(90,184,138,0.12); color: #5ab88a; border: 1px solid #5ab88a; }
+    .badge-strong { background: rgba(79,195,247,0.12); color: #4fc3f7; border: 1px solid #4fc3f7; }
+    .badge-hold { background: var(--gold-dim); color: var(--gold); border: 1px solid var(--gold); }
+    .rc-thesis { font-size: 12px; color: var(--text-muted); line-height: 1.9; margin-bottom: 28px; }
+    .rc-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 24px; }
+    .rcm-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+    .rcm-value { font-family: 'Cormorant Garamond', serif; font-size: 22px; }
+    .rc-analyst { margin-top: 20px; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; }
+    .rc-analyst strong { color: var(--white); font-weight: 400; }
+
+    /* PERFORMANCE */
+    #performance { }
+    .perf-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 60px; }
+    .perf-tabs { display: flex; gap: 0; border: 1px solid var(--border); }
+    .perf-tab { padding: 10px 22px; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-right: 1px solid var(--border); font-weight: 500; background: transparent; color: var(--text-muted); border-top: none; border-left: none; border-bottom: none; transition: background 0.2s, color 0.2s; }
+    .perf-tab:last-child { border-right: none; }
+    .perf-tab.active, .perf-tab:hover { background: var(--gold); color: var(--black); }
+    .perf-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 2px; background: var(--border); }
+    .perf-chart-area { background: var(--black); padding: 44px; }
+    .perf-chart-title { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 32px; }
+    .chart-wrap { position: relative; height: 220px; }
+    svg.perf-svg { width: 100%; height: 100%; overflow: visible; }
+    .perf-side { background: var(--black); padding: 44px; display: flex; flex-direction: column; gap: 28px; }
+    .perf-metric-card { padding: 24px; border: 1px solid rgba(255,255,255,0.06); }
+    .pmc-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+    .pmc-val { font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 300; line-height: 1; }
+    .pmc-val.pos { color: #5ab88a; }
+    .pmc-val.gold { color: var(--gold-light); }
+    .pmc-sub { font-size: 10px; color: var(--text-muted); margin-top: 6px; }
+
+    /* FOOTER */
+    footer { background: var(--black); border-top: 1px solid var(--border); padding: 60px 60px 40px; }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 50px; }
+    .footer-brand .brand-name { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 16px; }
+    .footer-brand .brand-name span { color: var(--gold); }
+    .footer-brand p { font-size: 11px; color: var(--text-muted); line-height: 2; max-width: 280px; }
+    .footer-col h4 { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .footer-col ul a { color: var(--text-muted); text-decoration: none; font-size: 12px; transition: color 0.2s; }
+    .footer-col ul a:hover { color: var(--white); }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.06); padding-top: 30px; display: flex; justify-content: space-between; align-items: center; }
+    .footer-bottom p { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; }
+    .footer-bottom .disclaimer { font-size: 9px; color: rgba(136,136,136,0.5); max-width: 400px; line-height: 1.8; text-align: right; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { opacity: 0; animation: fadeUp 0.8s ease forwards; }
+    .d1{animation-delay:0.1s} .d2{animation-delay:0.3s} .d3{animation-delay:0.5s}
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="index.html"><img src="Dagher__White_Transparent.png" alt="Dagher" style="height:20px; width:auto; display:inline-block; position:relative; bottom:3px; margin-right:10px;" /> <span>CAPITAL</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="investments.html" class="active">Investments</a></li>
+      <li><a href="macro.html">Macro</a></li>
+      <li><a href="consulting.html">Consulting</a></li>
+      <li><a href="quant.html">Quant</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="page-eyebrow fade-in d1">Investment Management</div>
+      <h1 class="page-title fade-in d2">Research-Driven<br/><em>Capital Allocation</em></h1>
+      <p class="page-subtitle fade-in d3">Deep fundamental analysis across equity markets. We build concentrated portfolios around high-conviction ideas, track every call, and measure every outcome.</p>
+    </div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <section id="overview">
+    <div class="reveal">
+      <div class="section-eyebrow">What We Do</div>
+      <h2 class="section-title">Three Pillars of<br/><em>Investment Management</em></h2>
+    </div>
+    <div class="overview-grid reveal">
+      <div class="ov-card">
+        <div class="ov-icon">◈</div>
+        <div class="ov-title">Equity Research</div>
+        <div class="ov-desc">Our analysts publish formal Buy, Hold, and Sell ratings with price targets, investment theses, and key risk factors.</div>
+      </div>
+      <div class="ov-card">
+        <div class="ov-icon">◉</div>
+        <div class="ov-title">Portfolio Management</div>
+        <div class="ov-desc">We manage client capital in concentrated, high-conviction portfolios. Each position is sized according to our proprietary conviction framework and risk parameters.</div>
+      </div>
+      <div class="ov-card">
+        <div class="ov-icon">◎</div>
+        <div class="ov-title">Performance Accountability</div>
+        <div class="ov-desc">Every rating is timestamped and tracked. We publish hit rates, alpha generated, and attribution analysis.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTOR EXPOSURE PIE CHART -->
+  <section id="exposure">
+    <div class="reveal">
+      <div class="section-eyebrow">Portfolio Composition</div>
+      <h2 class="section-title">Sector <em>Exposure</em></h2>
+      <div class="gold-divider"></div>
+      <p style="font-size:13px;color:var(--text-muted);line-height:2;max-width:520px">We are currently positioned with a tilt toward high-quality technology and financial businesses with durable competitive moats and an avoidance of long-term projected cash-flow generation.</p>
+    </div>
+    <div class="exposure-grid reveal">
+      <div class="pie-wrap">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" id="pie-svg"></svg>
+        <div class="pie-center">
+          <div class="pie-center-val" id="pie-hover-val">100%</div>
+          <div class="pie-center-label" id="pie-hover-label">Total AUM</div>
+        </div>
+      </div>
+      <div>
+        <div class="legend" id="pie-legend"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ANALYST RATINGS -->
+  <section id="ratings">
+    <div class="ratings-header reveal">
+      <div>
+        <div class="section-eyebrow">Analyst Coverage</div>
+        <h2 class="section-title">Our <em>Latest</em> Ratings</h2>
+      </div>
+      <a href="#" class="btn-ghost">Full Coverage Universe</a>
+    </div>
+    <div class="research-grid reveal">
+      <div class="research-card">
+        <div class="rc-sector">Technology · Semiconductors</div>
+        <div class="rc-ticker">NVDA</div>
+        <div class="rc-company">NVIDIA Corporation</div>
+        <span class="rc-rating-badge badge-strong">⬆ Strong Buy</span>
+        <p class="rc-thesis">NVIDIA's data center dominance accelerates as hyperscalers expand AI infrastructure spending. The Blackwell architecture creates a multi-year competitive moat that the market continues to underprice relative to the earnings power trajectory.</p>
+        <div class="rc-metrics">
+          <div><div class="rcm-label">Price Target</div><div class="rcm-value">$1,100</div></div>
+          <div><div class="rcm-label">Upside</div><div class="rcm-value" style="color:#5ab88a">+19%</div></div>
+          <div><div class="rcm-label">P/E (Fwd)</div><div class="rcm-value">38.4x</div></div>
+          <div><div class="rcm-label">Updated</div><div class="rcm-value" style="font-size:16px">Apr '26</div></div>
+        </div>
+        <div class="rc-analyst">Coverage by <strong>James Dagher</strong></div>
+      </div>
+      <div class="research-card">
+        <div class="rc-sector">Financials · Asset Management</div>
+        <div class="rc-ticker">BLK</div>
+        <div class="rc-company">BlackRock Inc.</div>
+        <span class="rc-rating-badge badge-buy">↑ Buy</span>
+        <p class="rc-thesis">BlackRock's private markets expansion and GIP integration positions the firm for outsized fee growth over the next decade. Secular inflows into alternatives and ETF dominance provide a durable earnings floor with significant optionality.</p>
+        <div class="rc-metrics">
+          <div><div class="rcm-label">Price Target</div><div class="rcm-value">$1,050</div></div>
+          <div><div class="rcm-label">Upside</div><div class="rcm-value" style="color:#5ab88a">+14%</div></div>
+          <div><div class="rcm-label">P/E (Fwd)</div><div class="rcm-value">22.1x</div></div>
+          <div><div class="rcm-label">Updated</div><div class="rcm-value" style="font-size:16px">Mar '26</div></div>
+        </div>
+        <div class="rc-analyst">Coverage by <strong>Sara Khoury</strong></div>
+      </div>
+      <div class="research-card">
+        <div class="rc-sector">Consumer · E-Commerce</div>
+        <div class="rc-ticker">AMZN</div>
+        <div class="rc-company">Amazon.com Inc.</div>
+        <span class="rc-rating-badge badge-buy">↑ Buy</span>
+        <p class="rc-thesis">AWS re-acceleration combined with improving retail margins creates a powerful earnings inflection story. The advertising segment — often overlooked — is compounding quietly into a high-margin revenue stream that could surpass $80B by 2028.</p>
+        <div class="rc-metrics">
+          <div><div class="rcm-label">Price Target</div><div class="rcm-value">$225</div></div>
+          <div><div class="rcm-label">Upside</div><div class="rcm-value" style="color:#5ab88a">+23%</div></div>
+          <div><div class="rcm-label">P/E (Fwd)</div><div class="rcm-value">34.2x</div></div>
+          <div><div class="rcm-label">Updated</div><div class="rcm-value" style="font-size:16px">Apr '26</div></div>
+        </div>
+        <div class="rc-analyst">Coverage by <strong>Michael Azar</strong></div>
+      </div>
+      <div class="research-card">
+        <div class="rc-sector">Technology · Cloud</div>
+        <div class="rc-ticker">MSFT</div>
+        <div class="rc-company">Microsoft Corporation</div>
+        <span class="rc-rating-badge badge-buy">↑ Buy</span>
+        <p class="rc-thesis">Azure's AI integration layer is creating switching costs at an unprecedented scale. Copilot monetization is still in early innings and represents a step-function increase in per-seat revenue that consensus models materially underestimate.</p>
+        <div class="rc-metrics">
+          <div><div class="rcm-label">Price Target</div><div class="rcm-value">$490</div></div>
+          <div><div class="rcm-label">Upside</div><div class="rcm-value" style="color:#5ab88a">+17%</div></div>
+          <div><div class="rcm-label">P/E (Fwd)</div><div class="rcm-value">31.8x</div></div>
+          <div><div class="rcm-label">Updated</div><div class="rcm-value" style="font-size:16px">Apr '26</div></div>
+        </div>
+        <div class="rc-analyst">Coverage by <strong>James Dagher</strong></div>
+      </div>
+      <div class="research-card">
+        <div class="rc-sector">Industrials · Aerospace</div>
+        <div class="rc-ticker">RTX</div>
+        <div class="rc-company">RTX Corporation</div>
+        <span class="rc-rating-badge badge-hold">— Hold</span>
+        <p class="rc-thesis">Defense tailwinds are real but GTF engine remediation costs remain an overhang through 2026. We see the risk/reward as fairly balanced at current levels and await clearer margin recovery signals before upgrading to Buy.</p>
+        <div class="rc-metrics">
+          <div><div class="rcm-label">Price Target</div><div class="rcm-value">$130</div></div>
+          <div><div class="rcm-label">Upside</div><div class="rcm-value" style="color:var(--gold)">+5%</div></div>
+          <div><div class="rcm-label">P/E (Fwd)</div><div class="rcm-value">19.4x</div></div>
+          <div><div class="rcm-label">Updated</div><div class="rcm-value" style="font-size:16px">Mar '26</div></div>
+        </div>
+        <div class="rc-analyst">Coverage by <strong>Lena Nader</strong></div>
+      </div>
+      <div class="research-card">
+        <div class="rc-sector">Financials · Banking</div>
+        <div class="rc-ticker">JPM</div>
+        <div class="rc-company">JPMorgan Chase</div>
+        <span class="rc-rating-badge badge-buy">↑ Buy</span>
+        <p class="rc-thesis">Dimon's fortress balance sheet and best-in-class investment banking franchise positions JPM to take share through any cycle. Return on tangible common equity above 20% is sustainable and the stock still trades at a reasonable premium to peers.</p>
+        <div class="rc-metrics">
+          <div><div class="rcm-label">Price Target</div><div class="rcm-value">$270</div></div>
+          <div><div class="rcm-label">Upside</div><div class="rcm-value" style="color:#5ab88a">+16%</div></div>
+          <div><div class="rcm-label">P/E (Fwd)</div><div class="rcm-value">13.2x</div></div>
+          <div><div class="rcm-label">Updated</div><div class="rcm-value" style="font-size:16px">Apr '26</div></div>
+        </div>
+        <div class="rc-analyst">Coverage by <strong>Sara Khoury</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PERFORMANCE / TRACK RECORD -->
+  <section id="performance">
+    <div class="perf-header reveal">
+      <div>
+        <div class="section-eyebrow">Track Record</div>
+        <h2 class="section-title">Holding Ourselves<br/><em>Accountable</em></h2>
+      </div>
+      <div class="perf-tabs">
+        <button class="perf-tab active">1Y</button>
+        <button class="perf-tab">2Y</button>
+        <button class="perf-tab">Inception</button>
+      </div>
+    </div>
+    <div class="perf-grid reveal">
+      <div class="perf-chart-area">
+        <div class="perf-chart-title">Buy Rating Performance vs. S&P 500 Benchmark</div>
+        <div class="chart-wrap">
+          <svg class="perf-svg" viewBox="0 0 600 200" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#b8963e" stop-opacity="0.3"/>
+                <stop offset="100%" stop-color="#b8963e" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <line x1="0" y1="50" x2="600" y2="50" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+            <line x1="0" y1="100" x2="600" y2="100" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+            <line x1="0" y1="150" x2="600" y2="150" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+            <path d="M0,140 C80,130 160,120 240,110 C320,100 400,95 500,80 L600,70" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-dasharray="4,4"/>
+            <path d="M0,150 C60,135 120,115 200,95 C280,75 360,55 450,35 L600,20 L600,200 L0,200 Z" fill="url(#goldGrad)"/>
+            <path d="M0,150 C60,135 120,115 200,95 C280,75 360,55 450,35 L600,20" fill="none" stroke="#b8963e" stroke-width="2"/>
+            <text x="10" y="18" fill="#b8963e" font-size="9" font-family="Montserrat" letter-spacing="1">DC Portfolio</text>
+            <text x="10" y="68" fill="rgba(255,255,255,0.4)" font-size="9" font-family="Montserrat" letter-spacing="1">S&amp;P 500</text>
+          </svg>
+        </div>
+      </div>
+      <div class="perf-side">
+        <div class="perf-metric-card">
+          <div class="pmc-label">Portfolio Return (1Y)</div>
+          <div class="pmc-val pos">+9%</div>
+          <div class="pmc-sub">vs. S&P 500 +3%</div>
+        </div>
+        <div class="perf-metric-card">
+          <div class="pmc-label">Hit Rate on Buy Ratings</div>
+          <div class="pmc-val gold">--%</div>
+          <div class="pmc-sub">-- of -- ratings positive</div>
+        </div>
+        <div class="perf-metric-card">
+          <div class="pmc-label">Alpha Generated</div>
+          <div class="pmc-val pos">+--%</div>
+          <div class="pmc-sub">Annualized since inception</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="brand-name">DAGHER <span>CAPITAL</span></div>
+        <p>A research-driven investment firm dedicated to generating superior long-term returns through rigorous fundamental analysis.</p>
+      </div>
+      <div class="footer-col"><h4>Firm</h4><ul><li><a href="index.html#about">About Us</a></li><li><a href="index.html#team">Our Team</a></li><li><a href="#performance">Track Record</a></li></ul></div>
+      <div class="footer-col"><h4>Divisions</h4><ul><li><a href="investments.html">Investments</a></li><li><a href="consulting.html">Consulting</a></li><li><a href="quant.html">Quant</a></li></ul></div>
+      <div class="footer-col"><h4>Legal</h4><ul><li><a href="index.html#contact">Contact Us</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Disclaimer</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Dagher Capital. All rights reserved.</p>
+      <p class="disclaimer">This website is for informational purposes only and does not constitute investment advice. Past performance is not indicative of future results.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Pie chart data
+    const sectors = [
+      { name: 'Technology', pct: 33.1, color: '#b8963e' },
+      { name: 'Financials', pct: 14.6, color: '#d4af6a' },
+      { name: 'Industrials / Aerospace', pct: 13.4, color: '#e8cfa0' },
+      { name: 'Crypto + Gold + Silver', pct: 28.4, color: '#f5f4f0' },
+      { name: 'Broad ETFs / Funds', pct: 8.1, color: '#888780' },
+      { name: 'Consumer / Retail', pct: 2.2, color: '#5f5e5a' },
+      { name: 'Healthcare', pct: 0.3, color: '#3a3a38' },
+      { name: 'Energy', pct: 0.0, color: '#2c2c2a' },
+    ];
+
+    function buildPie() {
+      const svg = document.getElementById('pie-svg');
+      const cx = 100, cy = 100, r = 80, inner = 52;
+      let angle = -Math.PI / 2;
+
+      sectors.forEach((s, i) => {
+        const slice = (s.pct / 100) * Math.PI * 2;
+        const x1 = cx + r * Math.cos(angle);
+        const y1 = cy + r * Math.sin(angle);
+        const x2 = cx + r * Math.cos(angle + slice);
+        const y2 = cy + r * Math.sin(angle + slice);
+        const ix1 = cx + inner * Math.cos(angle);
+        const iy1 = cy + inner * Math.sin(angle);
+        const ix2 = cx + inner * Math.cos(angle + slice);
+        const iy2 = cy + inner * Math.sin(angle + slice);
+        const large = slice > Math.PI ? 1 : 0;
+
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', `M${ix1},${iy1} L${x1},${y1} A${r},${r} 0 ${large},1 ${x2},${y2} L${ix2},${iy2} A${inner},${inner} 0 ${large},0 ${ix1},${iy1} Z`);
+        path.setAttribute('fill', s.color);
+        path.setAttribute('opacity', '0.85');
+        path.setAttribute('stroke', '#0a0a0a');
+        path.setAttribute('stroke-width', '2');
+        path.style.transition = 'opacity 0.2s, transform 0.2s';
+        path.style.cursor = 'pointer';
+        path.style.transformOrigin = `${cx}px ${cy}px`;
+
+        path.addEventListener('mouseenter', () => {
+          path.style.opacity = '1';
+          path.style.transform = 'scale(1.04)';
+          document.getElementById('pie-hover-val').textContent = s.pct + '%';
+          document.getElementById('pie-hover-label').textContent = s.name;
+        });
+        path.addEventListener('mouseleave', () => {
+          path.style.opacity = '0.85';
+          path.style.transform = 'scale(1)';
+          document.getElementById('pie-hover-val').textContent = '100%';
+          document.getElementById('pie-hover-label').textContent = 'Total AUM';
+        });
+
+        svg.appendChild(path);
+        angle += slice;
+      });
+    }
+
+    function buildLegend() {
+      const legend = document.getElementById('pie-legend');
+      sectors.forEach(s => {
+        const item = document.createElement('div');
+        item.className = 'legend-item';
+        item.innerHTML = `
+          <div class="legend-dot" style="background:${s.color}"></div>
+          <div class="legend-name">${s.name}</div>
+          <div style="flex:1;height:2px;background:rgba(255,255,255,0.08);overflow:hidden">
+            <div style="height:100%;width:0;background:${s.color};transition:width 1.2s ease" data-w="${s.pct}"></div>
+          </div>
+          <div class="legend-pct" style="color:${s.color};width:40px;text-align:right">${s.pct}%</div>`;
+        legend.appendChild(item);
+      });
+    }
+
+    buildPie();
+    buildLegend();
+
+    // Animate legend bars on scroll
+    const expObserver = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          setTimeout(() => {
+            document.querySelectorAll('[data-w]').forEach(bar => {
+              bar.style.width = bar.dataset.w + '%';
+            });
+          }, 300);
+          expObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    const expSection = document.getElementById('exposure');
+    if (expSection) expObserver.observe(expSection);
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80); });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Perf tabs
+    document.querySelectorAll('.perf-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.perf-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
