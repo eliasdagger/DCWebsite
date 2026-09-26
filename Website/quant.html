@@ -156,6 +156,134 @@
     .req-text { font-size: 12px; color: var(--text-muted); line-height: 1.7; }
     .req-text strong { color: var(--white); font-weight: 500; display: block; margin-bottom: 4px; }
 
+    /* COVERAGE UNIVERSE */
+    #coverage { --ok: #b8963e; --thin: rgba(184,150,62,0.4); --miss: #e57373; }
+    .cov-intro { font-size: 13px; line-height: 2.1; color: var(--text-muted); max-width: 640px; }
+    .cov-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: var(--border); margin: 56px 0 2px; }
+    .cov-stat { background: var(--black); padding: 30px 32px; }
+    .cov-stat-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+    .cov-stat-val { font-family: 'Cormorant Garamond', serif; font-size: 44px; font-weight: 300; line-height: 1; color: var(--gold-light); font-variant-numeric: tabular-nums; }
+    .cov-stat-sub { font-size: 10px; color: var(--text-muted); margin-top: 8px; }
+
+    .cov-panel { border: 1px solid var(--border); background: var(--mid); padding: 36px; margin-top: 40px; }
+    #explorer { scroll-margin-top: 110px; }
+    .cov-panel-head { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; flex-wrap: wrap; margin-bottom: 26px; }
+    .cov-panel-title { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 500; }
+    .cov-panel-note { font-size: 11px; color: var(--text-muted); }
+    .cov-legend { display: flex; gap: 18px; flex-wrap: wrap; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; }
+    .cov-legend span { display: inline-flex; align-items: center; gap: 7px; }
+    .sw { width: 10px; height: 10px; display: inline-block; flex-shrink: 0; }
+    .sw.O { background: var(--ok); } .sw.T { background: var(--thin); }
+    .sw.M { background: var(--miss); } .sw.N { border: 1px solid rgba(255,255,255,0.18); }
+
+    .hm-scroll { overflow-x: auto; }
+    .hm { border-collapse: separate; border-spacing: 2px; font-size: 10px; min-width: 860px; width: 100%; }
+    .hm th { font-weight: 400; color: var(--text-muted); }
+    .hm thead th.grp { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); text-align: left; padding: 0 0 6px; border-bottom: 1px solid var(--border); }
+    .hm thead th.fld { height: 92px; vertical-align: bottom; padding: 0 0 6px; }
+    .hm thead th.fld div { writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; font-size: 9px; letter-spacing: 0.5px; margin: 0 auto; }
+    .hm tbody th { text-align: left; white-space: nowrap; padding-right: 14px; font-size: 11px; color: var(--white); }
+    .hm tbody th small { color: var(--text-muted); font-size: 9px; margin-left: 6px; }
+    .hm tbody tr { cursor: pointer; }
+    .hm tbody tr:hover th, .hm tbody tr.sel th { color: var(--gold-light); }
+    .hm td { height: 24px; min-width: 22px; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 8px; color: rgba(10,10,10,0.75); }
+    .hm td.na { background: transparent; outline: 1px solid rgba(255,255,255,0.07); outline-offset: -1px; color: transparent; }
+    .hm td.low { color: rgba(245,244,240,0.8); }
+
+    .cov-controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 18px; }
+    .cov-search { flex: 1 1 240px; background: var(--black); border: 1px solid rgba(255,255,255,0.1); color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 12px; padding: 12px 16px; outline: none; transition: border-color 0.2s; }
+    .cov-search:focus { border-color: var(--gold); }
+    .cov-search::placeholder { color: #666; }
+    .cov-select { background: var(--black); border: 1px solid rgba(255,255,255,0.1); color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 11px; padding: 12px 14px; outline: none; cursor: pointer; }
+    .cov-select:focus { border-color: var(--gold); }
+    .cov-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 22px; }
+    .chip { background: transparent; border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); font-family: 'Montserrat', sans-serif; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 12px; cursor: pointer; transition: all 0.2s; }
+    .chip:hover { color: var(--white); border-color: var(--border); }
+    .chip.on { color: var(--black); background: var(--gold); border-color: var(--gold); }
+    .cov-count { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+
+    .co-list { border-top: 1px solid rgba(255,255,255,0.06); }
+    .co-row { display: grid; grid-template-columns: 70px minmax(0,1.6fr) minmax(0,0.9fr) auto 64px; gap: 18px; align-items: center; padding: 13px 4px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: background 0.15s; }
+    .co-row:hover, .co-row.open { background: rgba(184,150,62,0.04); }
+    .co-tkr { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--gold-light); }
+    .co-name { font-size: 12px; font-weight: 400; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .co-ind { font-size: 10px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 3px; }
+    .co-sector { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; }
+    .strip { display: flex; gap: 2px; }
+    .strip i { width: 7px; height: 16px; display: block; }
+    .strip i.O { background: var(--ok); } .strip i.T { background: var(--thin); }
+    .strip i.M { background: var(--miss); } .strip i.N { outline: 1px solid rgba(255,255,255,0.14); outline-offset: -1px; }
+    .co-pct { font-family: 'JetBrains Mono', monospace; font-size: 12px; text-align: right; font-variant-numeric: tabular-nums; }
+    .co-pct.warn { color: var(--miss); }
+    .co-detail { display: none; padding: 6px 4px 22px 88px; font-size: 11px; color: var(--text-muted); line-height: 1.9; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .co-row.open + .co-detail { display: block; }
+    .co-detail b { color: var(--white); font-weight: 500; }
+    .co-detail .tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 8px; margin: 2px 4px 2px 0; }
+    .co-detail .tag.M { color: var(--miss); background: rgba(229,115,115,0.1); }
+    .co-detail .tag.T { color: var(--gold-light); background: var(--gold-dim); }
+    .co-detail .tag.N { color: var(--text-muted); background: rgba(255,255,255,0.04); }
+    .co-more { display: block; margin: 24px auto 0; background: transparent; border: 1px solid var(--border); color: var(--gold-light); font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; padding: 13px 30px; cursor: pointer; transition: background 0.2s; }
+    .co-more:hover { background: var(--gold-dim); }
+    .co-empty { padding: 40px 0; text-align: center; color: var(--text-muted); font-size: 12px; }
+    .cov-method { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; margin-top: 34px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.06); }
+    .cov-method div { font-size: 11px; color: var(--text-muted); line-height: 1.8; }
+    .cov-method b { display: flex; align-items: center; gap: 8px; color: var(--white); font-weight: 500; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+
+    /* ROADMAP */
+    #roadmap { background: var(--mid); }
+    .rm-grid { display: grid; grid-template-columns: 1.55fr 1fr; gap: 60px; margin-top: 60px; align-items: start; }
+    .rm-list { display: flex; flex-direction: column; gap: 2px; background: var(--border); }
+    .rm-layer { background: var(--mid); padding: 34px 36px; position: relative; }
+    .rm-layer::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; }
+    .rm-layer.done::before { background: var(--green); }
+    .rm-layer.active::before { background: var(--gold); }
+    .rm-layer.planned::before { background: rgba(255,255,255,0.12); }
+    .rm-top { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 8px; }
+    .rm-num { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; }
+    .rm-status { display: flex; align-items: center; gap: 8px; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; }
+    .rm-layer.done .rm-status { color: var(--green); }
+    .rm-layer.active .rm-status { color: var(--gold-light); }
+    .rm-layer.planned .rm-status { color: var(--text-muted); }
+    .rm-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .rm-layer.active .rm-dot { animation: pulse 2s infinite; }
+    .rm-name { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; margin-bottom: 8px; }
+    .rm-desc { font-size: 12px; color: var(--text-muted); line-height: 1.9; }
+    .rm-group { margin-top: 20px; }
+    .rm-group-label { font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+    .rm-items { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .rm-items li { font-size: 12px; line-height: 1.6; color: rgba(245,244,240,0.8); display: flex; gap: 12px; }
+    .rm-items li::before { flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; width: 12px; }
+    .rm-items.done li::before { content: '✓'; color: var(--green); }
+    .rm-items.now li::before { content: '▸'; color: var(--gold); }
+    .rm-items.next li::before { content: '○'; color: var(--text-muted); }
+    .rm-items.next li { color: var(--text-muted); }
+
+    .rm-side { display: flex; flex-direction: column; gap: 2px; background: var(--border); position: sticky; top: 120px; }
+    .rm-card { background: var(--black); padding: 30px 32px; }
+    .rm-card h3 { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 14px; }
+    .rm-card p { font-size: 12px; color: var(--text-muted); line-height: 1.9; }
+    .rm-card p + p { margin-top: 12px; }
+    .rm-card p strong { color: var(--white); font-weight: 500; }
+    .pw { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 6px; }
+    .pw th { font-weight: 400; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); text-align: right; padding: 0 0 10px; }
+    .pw th:first-child { text-align: left; }
+    .pw td { padding: 9px 0; border-top: 1px solid rgba(255,255,255,0.06); text-align: right; font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; color: rgba(245,244,240,0.85); }
+    .pw td:first-child { text-align: left; font-family: 'Montserrat', sans-serif; color: var(--text-muted); }
+    .pw td.hi { color: var(--gold-light); }
+
+    @media (max-width: 900px) {
+      section { padding: 72px 20px; }
+      .cov-stats { grid-template-columns: 1fr 1fr; }
+      .cov-panel { padding: 22px 16px; }
+      .cov-method { grid-template-columns: 1fr 1fr; }
+      .co-row { grid-template-columns: 58px minmax(0,1fr) 52px; gap: 12px; }
+      .co-sector, .co-row .strip { display: none; }
+      .co-detail { padding-left: 4px; }
+      .rm-grid { grid-template-columns: 1fr; gap: 40px; }
+      .rm-side { position: static; }
+      .rm-layer { padding: 28px 22px; }
+    }
+
     footer { background: var(--black); border-top: 1px solid var(--border); padding: 60px 60px 40px; }
     .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 50px; }
     .footer-brand .brand-name { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 16px; }
@@ -202,12 +330,166 @@
 
   <!-- TICKER STRIP -->
   <div class="ticker-strip">
-    <div class="ticker-label">Live Feed</div>
+    <div class="ticker-label">In Coverage</div>
     <div class="ticker-track">
       <div class="ticker-inner" id="ticker-inner"></div>
     </div>
   </div>
-  
+
+  <section id="coverage">
+    <div class="reveal">
+      <div class="section-eyebrow">Coverage Universe</div>
+      <h2 class="section-title">The S&amp;P 500,<br/><em>Read From the Filings</em></h2>
+      <p class="cov-intro">Every fundamental in our pipeline is pulled directly from SEC EDGAR, as originally filed, with no third-party data vendor in between. This is what we actually hold: every company, every field, including the gaps.</p>
+    </div>
+
+    <div class="cov-stats reveal">
+      <div class="cov-stat"><div class="cov-stat-label">Companies</div><div class="cov-stat-val" id="st-n">—</div><div class="cov-stat-sub">S&amp;P 500 constituents</div></div>
+      <div class="cov-stat"><div class="cov-stat-label">Sectors</div><div class="cov-stat-val" id="st-sec">—</div><div class="cov-stat-sub" id="st-ind">—</div></div>
+      <div class="cov-stat"><div class="cov-stat-label">Field Coverage</div><div class="cov-stat-val" id="st-cov">—</div><div class="cov-stat-sub" id="st-fields">—</div></div>
+      <div class="cov-stat"><div class="cov-stat-label">Screen-Ready</div><div class="cov-stat-val" id="st-scr">—</div><div class="cov-stat-sub">Core financials complete</div></div>
+    </div>
+
+    <div class="cov-panel reveal">
+      <div class="cov-panel-head">
+        <div>
+          <div class="cov-panel-title">Coverage by Sector</div>
+          <div class="cov-panel-note" style="margin-top:6px">Share of companies with usable data for each line item. Click a sector to filter the list below.</div>
+        </div>
+        <div class="cov-legend"><span><i class="sw N"></i>Not applicable to sector</span></div>
+      </div>
+      <div class="hm-scroll"><table class="hm" id="heatmap"></table></div>
+    </div>
+
+    <div class="cov-panel reveal" id="explorer">
+      <div class="cov-panel-head">
+        <div class="cov-panel-title">Company Explorer</div>
+        <div class="cov-legend">
+          <span><i class="sw O"></i>5+ years</span><span><i class="sw T"></i>Under 5 years</span>
+          <span><i class="sw M"></i>Missing</span><span><i class="sw N"></i>N/A</span>
+        </div>
+      </div>
+      <div class="cov-controls">
+        <input class="cov-search" id="q" type="search" placeholder="Search ticker, company, or industry" autocomplete="off" aria-label="Search companies" />
+        <select class="cov-select" id="f-status" aria-label="Filter by status">
+          <option value="all">All companies</option>
+          <option value="ready">Screen-ready</option>
+          <option value="gaps">Has missing fields</option>
+          <option value="blocked">Not screen-ready</option>
+        </select>
+        <select class="cov-select" id="f-sort" aria-label="Sort">
+          <option value="tkr">Sort: Ticker</option>
+          <option value="name">Sort: Company</option>
+          <option value="covd">Sort: Coverage, high to low</option>
+          <option value="cova">Sort: Coverage, low to high</option>
+        </select>
+      </div>
+      <div class="cov-chips" id="chips"></div>
+      <div class="cov-count" id="count"></div>
+      <div class="co-list" id="list"></div>
+      <button class="co-more" id="more" type="button">Show more</button>
+
+      <div class="cov-method">
+        <div><b><i class="sw O"></i>Covered</b>At least five annual 10-K periods for the line item, deep enough to measure trends and growth.</div>
+        <div><b><i class="sw T"></i>Thin</b>Present, but under five years of history. Usable for levels, weaker for growth.</div>
+        <div><b><i class="sw M"></i>Missing</b>No usable figure found across the tags we map. Flagged rather than filled with guesses.</div>
+        <div><b><i class="sw N"></i>Not applicable</b>Line items a sector doesn't report by design, such as COGS or current assets for banks and REITs.</div>
+      </div>
+      <div class="cov-panel-note" style="margin-top:24px">Screen-ready means revenue, net income, total assets, equity and cash are all present. <span id="asof"></span></div>
+    </div>
+  </section>
+
+  <section id="roadmap">
+    <div class="reveal">
+      <div class="section-eyebrow">Build Log</div>
+      <h2 class="section-title">What's Built.<br/><em>What's Next.</em></h2>
+      <p class="cov-intro">Our quantitative platform is built in layers, each depending only on the ones below it. We publish where it stands, including what isn't finished.</p>
+    </div>
+    <div class="rm-grid">
+      <div class="rm-list reveal">
+        <div class="rm-layer done">
+          <div class="rm-top"><span class="rm-num">LAYER 01</span><span class="rm-status"><i class="rm-dot"></i>Complete</span></div>
+          <div class="rm-name">Portfolio Analytics</div>
+          <div class="rm-desc">Client holdings, returns, risk metrics and reporting, on our own market-data store.</div>
+          <div class="rm-group">
+            <ul class="rm-items done">
+              <li>Market data ingestion and caching in an analytical database</li>
+              <li>Simple, log, cumulative and annualized returns; volatility</li>
+              <li>Sharpe ratio and maximum drawdown</li>
+              <li>Live position tracking and per-client reports</li>
+              <li>Automated test suite</li>
+            </ul>
+          </div>
+        </div>
+        <div class="rm-layer active">
+          <div class="rm-top"><span class="rm-num">LAYER 02</span><span class="rm-status"><i class="rm-dot"></i>In Progress</span></div>
+          <div class="rm-name">Investment Screening</div>
+          <div class="rm-desc">Multi-criteria scoring that combines quantitative fundamentals with our analysts' qualitative theses. The first strategy is value investing.</div>
+          <div class="rm-group">
+            <div class="rm-group-label">Done</div>
+            <ul class="rm-items done">
+              <li>SEC EDGAR filings pulled for the full S&amp;P 500</li>
+              <li>Accounting-tag map that reconciles how companies label the same line item</li>
+              <li>Data-quality audit across 27 line items (the explorer above)</li>
+              <li>Company history that keeps past classifications, so old periods aren't rescored with today's labels</li>
+              <li>Storage for analysts' four-pillar qualitative theses</li>
+            </ul>
+          </div>
+          <div class="rm-group">
+            <div class="rm-group-label">Now</div>
+            <ul class="rm-items now">
+              <li>Persisting raw filings and computing derived metrics: margins, gross profitability, Altman components</li>
+              <li>Filing-lag rule, so no figure is used before the date it became public</li>
+            </ul>
+          </div>
+          <div class="rm-group">
+            <div class="rm-group-label">Next</div>
+            <ul class="rm-items next">
+              <li>Altman Z-score screen to remove financially distressed companies</li>
+              <li>Sector-neutral percentile ranking</li>
+              <li>Weighted qualitative pillar scores</li>
+              <li>Monte Carlo sensitivity across weights and classifications</li>
+            </ul>
+          </div>
+        </div>
+        <div class="rm-layer planned">
+          <div class="rm-top"><span class="rm-num">LAYER 03</span><span class="rm-status"><i class="rm-dot"></i>Planned</span></div>
+          <div class="rm-name">Portfolio Optimization</div>
+          <div class="rm-desc">Constrained allocation across screened names, with an explicit risk model.</div>
+        </div>
+        <div class="rm-layer planned">
+          <div class="rm-top"><span class="rm-num">LAYER 04</span><span class="rm-status"><i class="rm-dot"></i>Planned</span></div>
+          <div class="rm-name">Trading Algorithm</div>
+          <div class="rm-desc">Systematic execution, paper-traded before any capital is committed.</div>
+        </div>
+      </div>
+
+      <aside class="rm-side reveal">
+        <div class="rm-card">
+          <h3>Design Principles</h3>
+          <p><strong>Point-in-time.</strong> A quarter ending March 31 isn't public until mid-May. Every figure carries the date it became knowable, and nothing is scored before then.</p>
+          <p><strong>As filed.</strong> We use numbers as originally reported rather than later restatements, which weren't available to anyone at the time.</p>
+          <p><strong>Weights as config.</strong> Scoring weights live outside the code, so changing a weight doesn't change the software.</p>
+        </div>
+        <div class="rm-card">
+          <h3>Qualitative Pillar Weights</h3>
+          <p>How much each pillar of an analyst's thesis counts, by company stage. A draft that will be stress-tested once scoring is built.</p>
+          <table class="pw">
+            <thead><tr><th>Pillar</th><th>Early</th><th>Growth</th><th>Mature</th></tr></thead>
+            <tbody>
+              <tr><td>Leadership</td><td>25%</td><td>15%</td><td>10%</td></tr>
+              <tr><td>Industry growth</td><td>15%</td><td>25%</td><td>30%</td></tr>
+              <tr><td>Moat</td><td>25%</td><td>30%</td><td class="hi">35%</td></tr>
+              <tr><td>Macro</td><td class="hi">35%</td><td>30%</td><td>25%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- HIDDEN FOR NOW: Active Strategies, Validated Performance, Engineers & Analysts.
+       Restore by deleting this comment wrapper once there are real numbers to show.
   <section id="strategies">
     <div class="reveal">
       <div class="section-eyebrow">Our Algorithms</div>
@@ -273,24 +555,18 @@
                 <stop offset="100%" stop-color="#4fc3f7" stop-opacity="0"/>
               </linearGradient>
             </defs>
-            <!-- Grid -->
             <line x1="0" y1="55" x2="620" y2="55" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
             <line x1="0" y1="110" x2="620" y2="110" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
             <line x1="0" y1="165" x2="620" y2="165" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-            <!-- Year labels -->
             <text x="0" y="215" fill="rgba(255,255,255,0.25)" font-size="8" font-family="Montserrat">2015</text>
             <text x="100" y="215" fill="rgba(255,255,255,0.25)" font-size="8" font-family="Montserrat">2017</text>
             <text x="206" y="215" fill="rgba(255,255,255,0.25)" font-size="8" font-family="Montserrat">2019</text>
             <text x="310" y="215" fill="rgba(255,255,255,0.25)" font-size="8" font-family="Montserrat">2021</text>
             <text x="414" y="215" fill="rgba(255,255,255,0.25)" font-size="8" font-family="Montserrat">2023</text>
             <text x="560" y="215" fill="rgba(255,255,255,0.25)" font-size="8" font-family="Montserrat">2026</text>
-            <!-- SPY benchmark -->
             <path d="M0,160 C50,148 100,138 160,122 C220,105 270,108 320,92 C370,78 420,72 480,58 L620,44" fill="none" stroke="rgba(79,195,247,0.5)" stroke-width="1.5" stroke-dasharray="4,3"/>
-            <!-- Strategy fill -->
             <path d="M0,170 C40,152 80,130 140,108 C200,88 250,92 310,70 C370,48 420,38 480,22 L620,8 L620,210 L0,210 Z" fill="url(#btGold)"/>
-            <!-- Strategy line -->
             <path d="M0,170 C40,152 80,130 140,108 C200,88 250,92 310,70 C370,48 420,38 480,22 L620,8" fill="none" stroke="#b8963e" stroke-width="2"/>
-            <!-- Labels -->
             <text x="8" y="12" fill="#b8963e" font-size="9" font-family="Montserrat" letter-spacing="1">Strategy +--%</text>
             <text x="8" y="48" fill="rgba(79,195,247,0.7)" font-size="9" font-family="Montserrat" letter-spacing="1">S&amp;P 500 +--%</text>
           </svg>
@@ -352,7 +628,8 @@
       </div>
     </div>
   </section>
-  
+  -->
+
   <section id="overview">
     <div class="overview-grid reveal">
       <div class="overview-text">
@@ -391,6 +668,7 @@
     </div>
   </footer>
 
+  <script src="data/coverage.js"></script>
   <script>
     // Code background
     const codeLines = [
@@ -423,22 +701,135 @@
     ];
     document.getElementById('code-bg').textContent = (codeLines.join('\n') + '\n').repeat(4);
 
-    // Ticker strip
-    const tickers = [
-      {sym:'NVDA',val:'924.18',chg:'+2.4%',pos:true},{sym:'MSFT',val:'418.32',chg:'+0.9%',pos:true},
-      {sym:'AMZN',val:'183.74',chg:'+1.7%',pos:true},{sym:'BLK',val:'921.55',chg:'+0.6%',pos:true},
-      {sym:'JPM',val:'234.88',chg:'+1.1%',pos:true},{sym:'RTX',val:'123.44',chg:'−0.3%',pos:false},
-      {sym:'AAPL',val:'211.20',chg:'+0.5%',pos:true},{sym:'GOOGL',val:'167.88',chg:'+1.3%',pos:true},
-      {sym:'META',val:'512.90',chg:'+2.1%',pos:true},{sym:'TSLA',val:'248.10',chg:'−1.8%',pos:false},
+    // ── Coverage universe (data: data/coverage.js, generated by DC/scripts/12_export_web.py)
+    const COV = window.DC_COVERAGE;
+    const FIELD_LABELS = {
+      revenue:'Revenue', cogs:'COGS', gross_profit:'Gross profit', ebit:'EBIT', ebitda:'EBITDA',
+      net_income:'Net income', sga:'SG&A', interest_expense:'Interest exp.',
+      cfo:'Operating CF', capex:'CapEx', fcf:'Free cash flow', dividends_paid:'Dividends',
+      buybacks:'Buybacks', debt_repaid:'Debt repaid',
+      total_assets:'Total assets', total_liabilities:'Total liab.', equity:'Equity',
+      current_assets:'Current assets', current_liabilities:'Current liab.', working_capital:'Working capital',
+      retained_earnings:'Retained earn.', cash:'Cash', total_debt:'Total debt', preferred_equity:'Preferred eq.',
+      shares_outstanding:'Shares out.', receivables:'Receivables', net_ppe:'Net PP&E',
+    };
+    const GROUPS = [
+      ['Income Statement', ['revenue','cogs','gross_profit','sga','ebit','ebitda','interest_expense','net_income']],
+      ['Cash Flow', ['cfo','capex','fcf','dividends_paid','buybacks','debt_repaid']],
+      ['Balance Sheet', ['total_assets','current_assets','receivables','cash','net_ppe','total_liabilities','current_liabilities','working_capital','total_debt','equity','retained_earnings','preferred_equity','shares_outstanding']],
     ];
+    const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+    // Ticker strip: headline names from the coverage universe
     const inner = document.getElementById('ticker-inner');
-    const doubled = [...tickers, ...tickers];
-    doubled.forEach(t => {
+    const BIG = ['AAPL','MSFT','NVDA','AMZN','GOOGL','META','JPM','V','LLY','WMT','JNJ','COST','HD','CAT','UNH','PG'];
+    const byTkr = COV ? Object.fromEntries(COV.companies.map(c => [c[0], c])) : {};
+    const strip = BIG.filter(t => byTkr[t]).map(t => byTkr[t]);
+    [...strip, ...strip].forEach(c => {
       const el = document.createElement('div');
       el.className = 'tick-item';
-      el.innerHTML = `<span class="tick-sym">${t.sym}</span><span class="tick-val">$${t.val}</span><span class="tick-chg ${t.pos?'pos':'neg'}">${t.chg}</span>`;
+      el.innerHTML = `<span class="tick-sym">${esc(c[0])}</span><span class="tick-val">${esc(c[1])}</span><span class="tick-chg pos">${c[6].toFixed(0)}% covered</span>`;
       inner.appendChild(el);
     });
+
+    if (COV) {
+      const F = COV.fields, idx = Object.fromEntries(F.map((f, i) => [f, i]));
+      const rows = COV.companies.map(c => ({
+        tkr: c[0], name: c[1], sector: c[2], industry: c[3], type: c[4], st: c[5], cov: c[6], ready: c[7],
+        hay: (c[0] + ' ' + c[1] + ' ' + c[3]).toLowerCase(),
+      }));
+      const sectors = [...new Set(rows.map(r => r.sector))].sort();
+      const fmtDate = new Date(COV.asOf + 'T12:00:00').toLocaleDateString('en-CA', {year:'numeric', month:'long', day:'numeric'});
+
+      // Headline stats
+      const nOk = rows.reduce((a, r) => a + [...r.st].filter(s => s !== 'M').length, 0);
+      document.getElementById('st-n').textContent = rows.length;
+      document.getElementById('st-sec').textContent = sectors.length;
+      document.getElementById('st-ind').textContent = new Set(rows.map(r => r.industry)).size + ' industries';
+      document.getElementById('st-cov').textContent = (100 * nOk / (rows.length * F.length)).toFixed(1) + '%';
+      document.getElementById('st-fields').textContent = F.length + ' line items per company';
+      document.getElementById('st-scr').textContent = rows.filter(r => r.ready).length;
+      document.getElementById('asof').textContent = 'Data as of ' + fmtDate + '.';
+
+      // Sector × field heatmap
+      const order = GROUPS.flatMap(g => g[1]).filter(f => f in idx);
+      const shade = p => `rgba(184,150,62,${(0.08 + 0.92 * Math.pow(p, 2.2)).toFixed(3)})`;
+      let h = '<thead><tr><th></th>' + GROUPS.map(g => `<th class="grp" colspan="${g[1].filter(f => f in idx).length}">${g[0]}</th>`).join('') + '</tr>';
+      h += '<tr><th></th>' + order.map(f => `<th class="fld"><div>${esc(FIELD_LABELS[f] || f)}</div></th>`).join('') + '</tr></thead><tbody>';
+      sectors.forEach(s => {
+        const rs = rows.filter(r => r.sector === s);
+        h += `<tr data-sector="${esc(s)}"><th>${esc(s)}<small>${rs.length}</small></th>`;
+        order.forEach(f => {
+          const i = idx[f], app = rs.filter(r => r.st[i] !== 'N');
+          if (!app.length) { h += `<td class="na" title="${esc(s)} · ${esc(FIELD_LABELS[f])}: not applicable"></td>`; return; }
+          const p = app.filter(r => r.st[i] !== 'M').length / app.length;
+          h += `<td class="${p < 0.55 ? 'low' : ''}" style="background:${shade(p)}" title="${esc(s)} · ${esc(FIELD_LABELS[f])}: ${Math.round(p * 100)}% of ${app.length}">${Math.round(p * 100)}</td>`;
+        });
+        h += '</tr>';
+      });
+      document.getElementById('heatmap').innerHTML = h + '</tbody>';
+
+      // Explorer
+      const state = { q: '', sector: 'All', status: 'all', sort: 'tkr', shown: 20 };
+      const chips = document.getElementById('chips');
+      chips.innerHTML = ['All', ...sectors].map(s => `<button type="button" class="chip${s === 'All' ? ' on' : ''}" data-s="${esc(s)}">${esc(s)}</button>`).join('');
+      const list = document.getElementById('list'), more = document.getElementById('more'), count = document.getElementById('count');
+      const STATUS_NAME = { M: 'Missing', T: 'Under 5 years', N: 'Not applicable' };
+
+      function filtered() {
+        const q = state.q.trim().toLowerCase();
+        let r = rows.filter(x =>
+          (state.sector === 'All' || x.sector === state.sector) &&
+          (!q || x.hay.includes(q)) &&
+          (state.status === 'all' || (state.status === 'ready' && x.ready) ||
+           (state.status === 'blocked' && !x.ready) || (state.status === 'gaps' && x.st.includes('M'))));
+        const cmp = { tkr: (a, b) => a.tkr.localeCompare(b.tkr), name: (a, b) => a.name.localeCompare(b.name),
+                      covd: (a, b) => b.cov - a.cov || a.tkr.localeCompare(b.tkr), cova: (a, b) => a.cov - b.cov || a.tkr.localeCompare(b.tkr) }[state.sort];
+        return r.sort(cmp);
+      }
+      function detail(x) {
+        const tags = code => order.filter(f => x.st[idx[f]] === code).map(f => `<span class="tag ${code}">${esc(FIELD_LABELS[f])}</span>`).join('');
+        let d = `<b>${esc(x.name)}</b> · ${esc(x.industry)} · ${esc(x.type)} company · ${x.ready ? 'Screen-ready' : '<span style="color:var(--miss)">Not screen-ready</span>'}<br/>`;
+        const parts = ['M', 'T', 'N'].filter(c => x.st.includes(c)).map(c => `${STATUS_NAME[c]}: ${tags(c)}`);
+        return d + (parts.length ? parts.join('<br/>') : 'Every tracked line item has five or more years of history.');
+      }
+      function render() {
+        const r = filtered();
+        count.textContent = r.length === rows.length ? `${r.length} companies` : `${r.length} of ${rows.length} companies`;
+        list.innerHTML = r.length ? r.slice(0, state.shown).map(x => `
+          <div class="co-row" role="button" tabindex="0" aria-expanded="false">
+            <span class="co-tkr">${esc(x.tkr)}</span>
+            <div style="min-width:0"><div class="co-name">${esc(x.name)}</div><div class="co-ind">${esc(x.industry)}</div></div>
+            <span class="co-sector">${esc(x.sector)}</span>
+            <span class="strip">${order.map(f => `<i class="${x.st[idx[f]]}" title="${esc(FIELD_LABELS[f])}"></i>`).join('')}</span>
+            <span class="co-pct${x.ready ? '' : ' warn'}">${x.cov.toFixed(1)}%</span>
+          </div><div class="co-detail">${detail(x)}</div>`).join('')
+          : '<div class="co-empty">No companies match these filters.</div>';
+        more.style.display = r.length > state.shown ? 'block' : 'none';
+        more.textContent = `Show more (${r.length - state.shown} remaining)`;
+        document.querySelectorAll('#heatmap tbody tr').forEach(tr => tr.classList.toggle('sel', tr.dataset.sector === state.sector));
+      }
+      const reset = () => { state.shown = 20; render(); };
+      function setSector(s) {
+        state.sector = s;
+        chips.querySelectorAll('.chip').forEach(c => c.classList.toggle('on', c.dataset.s === s));
+        reset();
+      }
+      document.getElementById('q').addEventListener('input', e => { state.q = e.target.value; reset(); });
+      document.getElementById('f-status').addEventListener('change', e => { state.status = e.target.value; reset(); });
+      document.getElementById('f-sort').addEventListener('change', e => { state.sort = e.target.value; reset(); });
+      chips.addEventListener('click', e => { const b = e.target.closest('.chip'); if (b) setSector(b.dataset.s); });
+      document.getElementById('heatmap').addEventListener('click', e => {
+        const tr = e.target.closest('tbody tr'); if (!tr) return;
+        setSector(state.sector === tr.dataset.sector ? 'All' : tr.dataset.sector);
+        document.getElementById('explorer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      more.addEventListener('click', () => { state.shown += 40; render(); });
+      const toggle = row => { row.classList.toggle('open'); row.setAttribute('aria-expanded', row.classList.contains('open')); };
+      list.addEventListener('click', e => { const row = e.target.closest('.co-row'); if (row) toggle(row); });
+      list.addEventListener('keydown', e => { const row = e.target.closest('.co-row'); if (row && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); toggle(row); } });
+      render();
+    }
 
     // Scroll reveal
     const reveals = document.querySelectorAll('.reveal');
