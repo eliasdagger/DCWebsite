@@ -1,0 +1,1 @@
+This is the website hosting progress and work completed. ~~No AI was harmed in the making of this website~~ Claude made the website, but I understand the HTML.
